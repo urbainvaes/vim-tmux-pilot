@@ -1,0 +1,21 @@
+set -g default-terminal "screen-256color"
+set -g status on
+set -g mouse on
+
+unbind C-b
+set -g prefix C-s
+bind s send-prefix
+
+unbind r
+bind r source-file ~/.tmux.conf
+
+set -sg escape-time 0
+set-option -g allow-rename off
+
+bind -n C-Left  previous-window
+bind -n C-Right next-window
+
+bind-key P swap-window -t -1
+bind-key N swap-window -t +1
+
+source-file ~/Dropbox/projects/vim-wintab/tmux/wintab.tmux.conf
