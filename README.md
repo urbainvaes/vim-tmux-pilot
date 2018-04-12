@@ -1,7 +1,8 @@
 # Wintab
 
 Inspired by [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator),
-this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` tabs or `tmux` windows when no `vim` split or `tmux` pane is available.
+this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` tabs or `tmux` windows when no `vim` split or `tmux` pane is available,
+similarly to what happens in the [i3](https://i3wm.org) window manager in a workspace with both tabs and windows.
 
 # Installation
 
@@ -19,10 +20,11 @@ A difference with that plugin is that [vim-wintab](https://github.com/urbainvaes
 (for example, the `<c-h>` and `<c-l>` readline keybindings will be available in the leftmost and rightmost `tmux` pane, respectively).
 
 - *wintab* mode, to additionally navigate `vim` tabs and `tmux` windows.
+In *wintab* mode,
+the order of precedence when `<ctrl-h>` or `<ctrl-l>` is pressed from `vim` is as follows:
+`vim` window → `viw` tab → `tmux` pane → `tmux` window.
 
 Use `WintabToggleMode` to change between them.
-In *wintab* mode,
-the order of precedence when `<ctrl-h>` or `<ctrl-l>` is pressed from `vim` is as follows: `vim` window → `viw` tab → `tmux` pane → `tmux` window.
 For more advanced customization,
 the variable `g:wintab_order` can be set to the desired order of precedence desired,
 and the value of `g:wintab_mode` will then be ignored.

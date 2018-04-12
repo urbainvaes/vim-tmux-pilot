@@ -72,7 +72,7 @@ function! wintab#wintab(wincmd)
 endfunction
 
 function! wintab#toggle()
-  call function(s:wintab_on ? "wintab#off" : "wintab#on")()
+  call function(s:on ? "wintab#off" : "wintab#on")()
 endfunction
 
 function! wintab#toggleMode()
@@ -80,11 +80,6 @@ function! wintab#toggleMode()
     let g:wintab_mode = (g:wintab_mode == 'wintab' ? 'win' : 'wintab')
     call wintab#on()
 endfunction
-
-nnoremap <silent> <Plug>(wintab-left)  :call wintab#wintab('h')<cr>
-nnoremap <silent> <Plug>(wintab-down)  :call wintab#wintab('j')<cr>
-nnoremap <silent> <Plug>(wintab-up)    :call wintab#wintab('k')<cr>
-nnoremap <silent> <Plug>(wintab-right) :call wintab#wintab('l')<cr>
 
 function! wintab#on()
     if get(g:, "wintab_maps", 1) == 1
@@ -120,6 +115,11 @@ function! wintab#off()
     let s:on = 0
     echom "Wintab status: off"
 endfunction
+
+nnoremap <silent> <Plug>(wintab-left)  :call wintab#wintab('h')<cr>
+nnoremap <silent> <Plug>(wintab-down)  :call wintab#wintab('j')<cr>
+nnoremap <silent> <Plug>(wintab-up)    :call wintab#wintab('k')<cr>
+nnoremap <silent> <Plug>(wintab-right) :call wintab#wintab('l')<cr>
 
 command! -nargs=0 WintabToggle call wintab#toggle()
 command! -nargs=0 WintabToggleMode call wintab#toggleMode()
