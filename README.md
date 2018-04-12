@@ -24,18 +24,18 @@ Use `WintabToggleMode` to change between them.
 In *wintab* mode,
 the order of precedence when `<ctrl-h>` or `<ctrl-l>` is pressed from `vim` is as follows: `vim` window → `viw` tab → `tmux` pane → `tmux` window.
 For more advanced customization,
-the variable `g:wintab_order` can be set to define the order of precedence desired,
+the variable `g:wintab_order` can be set to the desired order of precedence desired,
 and the value of `g:wintab_mode` will then be ignored.
 One could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
 to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
 
-`tmux` keybindings are defined automatically by the plugin, 
+`tmux` keybindings are defined automatically by the plugin,
 but to make them persistent and available in all sessions,
 source one of the files `tmux/{win,wintab}.conf` from your `~/.tmux.conf`,
 e.g. if you installed with [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```tmux
-source-file ~/.vim/plugged/vim-wintab/tmux/wintab.tmux.conf
+source-file ~/.vim/plugged/vim-wintab/tmux/wintab.conf
 ```
 
 # Customization
