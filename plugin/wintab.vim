@@ -81,12 +81,19 @@ function! wintab#toggleMode()
     call wintab#on()
 endfunction
 
+nnoremap <silent> <Plug>(wintab-left)  :call wintab#wintab('h')<cr>
+nnoremap <silent> <Plug>(wintab-down)  :call wintab#wintab('j')<cr>
+nnoremap <silent> <Plug>(wintab-up)    :call wintab#wintab('k')<cr>
+nnoremap <silent> <Plug>(wintab-right) :call wintab#wintab('l')<cr>
+
 function! wintab#on()
+    if get(g:, "wintab_maps", 1) == 1
+        nmap <c-h> <Plug>(wintab-left)
+        nmap <c-j> <Plug>(wintab-down)
+        nmap <c-k> <Plug>(wintab-up)
+        nmap <c-l> <Plug>(wintab-right)
+    endif
     let s:order = s:order()
-    nnoremap <silent> <Plug>(wintab-left)  :call wintab#wintab('h')<cr>
-    nnoremap <silent> <Plug>(wintab-down)  :call wintab#wintab('j')<cr>
-    nnoremap <silent> <Plug>(wintab-up)    :call wintab#wintab('k')<cr>
-    nnoremap <silent> <Plug>(wintab-right) :call wintab#wintab('l')<cr>
     if $TMUX != ''
         if index(s:order, 'tpane') >= 0 && index(s:order, 'twin') >= 0
             call system("tmux source-file ".s:path."/../tmux/wintab.conf")
@@ -101,10 +108,12 @@ function! wintab#on()
 endfunction
 
 function! wintab#off()
-    nunmap <c-h>
-    nunmap <c-l>
-    nunmap <c-j>
-    nunmap <c-k>
+    if get(g:, "wintab_maps", 1) == 1
+        nunmap <c-h>
+        nunmap <c-l>
+        nunmap <c-j>
+        nunmap <c-k>
+    endif
     if $TMUX != ''
         call system("tmux source-file ".s:path."/../tmux/disable.conf")
     endif
@@ -114,12 +123,5 @@ endfunction
 
 command! -nargs=0 WintabToggle call wintab#toggle()
 command! -nargs=0 WintabToggleMode call wintab#toggleMode()
-
-if get(g:, "wintab_maps", 1) == 1
-    nmap <c-h> <Plug>(wintab-left)
-    nmap <c-j> <Plug>(wintab-down)
-    nmap <c-k> <Plug>(wintab-up)
-    nmap <c-l> <Plug>(wintab-right)
-endif
 
 silent call wintab#on()
