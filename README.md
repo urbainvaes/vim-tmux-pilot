@@ -22,21 +22,16 @@ A difference with that plugin is that [vim-wintab](https://github.com/urbainvaes
 
 Use `WintabToggleMode` to change between them.
 In *wintab* mode,
-the logic used to decide what to do from within `vim` when `<ctrl-h>` or `<ctrl-l>` is pressed goes as follows:
-
-- If there is a `vim` window in the given (`h` or `l`) direction, move to it;
-- Else if there is a `vim` tab in the given direction, move to it;
-- Else if there is a `tmux` split in the given direction, move to it;
-- Else if there is a `tmux` window in the given direction, move to it;
-- Else do nothing.
-
+the order of precedence when `<ctrl-h>` or `<ctrl-l>` is pressed from `vim` is as follows: `vim` window → `viw` tab → `tmux` pane → `tmux` window.
 For more advanced customization,
 the variable `g:wintab_order` can be set to define the order of precedence desired,
 and the value of `g:wintab_mode` will then be ignored.
 One could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
 to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
 
-To make the `tmux` keybindings persistent, source one of the files `tmux/{win,wintab}.conf` from your `~/.tmux.conf`,
+`tmux` keybindings are defined automatically by the plugin, 
+but to make them persistent and available in all sessions,
+source one of the files `tmux/{win,wintab}.conf` from your `~/.tmux.conf`,
 e.g. if you installed with [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```tmux

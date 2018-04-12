@@ -116,9 +116,9 @@ command! -nargs=0 WintabToggle call wintab#toggle()
 command! -nargs=0 WintabToggleMode call wintab#toggleMode()
 
 if get(g:, "wintab_maps", 1) == 1
-    nmap <c-h> <Plug>(wintab-left) 
-    nmap <c-j> <Plug>(wintab-down) 
-    nmap <c-k> <Plug>(wintab-up)   
+    nmap <c-h> <Plug>(wintab-left)
+    nmap <c-j> <Plug>(wintab-down)
+    nmap <c-k> <Plug>(wintab-up)
     nmap <c-l> <Plug>(wintab-right)
 endif
 
