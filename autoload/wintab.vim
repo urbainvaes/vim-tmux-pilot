@@ -20,28 +20,50 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
+function! s:get_tmux_cmd(wincmd)
+  if $TMUX == ""
+    return ""
+  elseif s:tmux_cmd == ""
+    let argument = a:wincmd . " dry"
+    let script = $WINTAB_ROOT . "/sh/tmux-wintabcmd"
+    let s:tmux_cmd=system('sh '.script." ".a:wincmd." dry")
+  endif
+  return s:tmux_cmd
+endfunction
+
 function! wintab#wintab(wincmd)
-  echom $WINTAB_MODE
-  " Vim window
-  let winnum = winnr()
-  execute 'wincmd' a:wincmd
-  if winnum != winnr()
-    return
-  endif
+  let order = get(g:, 'wintab_order', ['vwin', 'vtab', 'tpane', 'twin'])
+  let s:tmux_cmd=""
 
-  " Vim tab
-  if $WINTAB_MODE != "winonly"
-    if tabpagenr() > 1 && a:wincmd == 'h'
-      tabprevious | return
-    elseif tabpagenr() < tabpagenr('$') && a:wincmd == 'l'
-      tabnext | return
+  for elem in order
+
+    " Vim window
+    if elem == 'vwin'
+      let winnum = winnr()
+      execute 'wincmd' a:wincmd
+      if winnum != winnr()
+        return
+      endif
+
+    " Tmux pane
+    elseif elem == 'tpane' && s:get_tmux_cmd(a:wincmd) =~ "select-pane"
+      call system(s:tmux_cmd) | return
+
+    " Vim tab
+    elseif elem == 'vtab'
+      if tabpagenr() > 1 && a:wincmd == 'h'
+        tabprevious | return
+      elseif tabpagenr() < tabpagenr('$') && a:wincmd == 'l'
+        tabnext | return
+      endif
+
+    " Tmux window
+    elseif elem == 'twin' && s:get_tmux_cmd(a:wincmd) =~ "select-window"
+      call system(s:tmux_cmd) | return
     endif
-  endif
 
-  " Tmux wintabcmd
-  if $TMUX != ''
-    call system('sh ' . $WINTAB_ROOT . "/sh/tmux-wintabcmd " . a:wincmd)
-  endif
+  endfor
+
 endfunction
 
 " vim: sw=2

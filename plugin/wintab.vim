@@ -21,10 +21,10 @@
 " THE SOFTWARE.
 
 function! wintab#on()
-  nmap <c-h> :call wintab#wintab('h')<cr>
-  nmap <c-j> :call wintab#wintab('j')<cr>
-  nmap <c-k> :call wintab#wintab('k')<cr>
-  nmap <c-l> :call wintab#wintab('l')<cr>
+  nnoremap <silent> <c-h> :call wintab#wintab('h')<cr>
+  nnoremap <silent> <c-j> :call wintab#wintab('j')<cr>
+  nnoremap <silent> <c-k> :call wintab#wintab('k')<cr>
+  nnoremap <silent> <c-l> :call wintab#wintab('l')<cr>
   let s:on = 1
   echom "Wintab status: on"
 endfunction

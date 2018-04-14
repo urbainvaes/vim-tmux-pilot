@@ -15,21 +15,21 @@ Plug 'urbainvaes/vim-wintab'
 ```
 In `~./zshrc`, add:
 ```zsh
-# Uncomment to disable navigation of vim tabs and tmux windows
-# export WINTAB_MODE=winonly
 
-export WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
 source ~/.vim/plugged/vim-wintab/wintab.plugin.zsh
 ```
 In `~/.tmux.conf`, add:
 ```tmux
+# Uncomment to disable navigation of tmux windows
+# WINTAB_MODE=winonly
+WINTAB_ROOT=$HOME/Dropbox/projects/vim-wintab
 source-file $WINTAB_ROOT/wintab.tmux.conf
 ```
 Note that the `$WINTAB_ROOT` environment variable needs to be defined for the plugin to work.
 
 # Usage
 
-Set the environment variable `WINTAB_WINONLY` to `winonly` to disable tab navigation.
+Set the environment variable `WINTAB_WINONLY` to `winonly` to disable tab navigation in `tmux`.
 In zsh, this plugin defines keybindings only for normal mode;
 to enable `tmux` navigation in insert mode,
 add the following to your `~/.zshrc`:
@@ -41,10 +41,17 @@ if ! [ $TMUX = "" ]
     bindkey "^l" wintabcmd_l
 fi
 ```
-With tab navigation enabled,
-the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
+The order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
 `vim` window → `viw` tab → `tmux` pane → `tmux` window.
-As of now, this order can't be customized.
+The variable `g:wintab_order` can be used to customize this order;
+one could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
+to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
+
+# Customization
+
+| Config           | Default                             | Description                |
+| ------           | -------                             | -----------                |
+| `g:wintab_order` | `['vwin', 'tpane', 'vtab', 'twin']` | Custom order of precedence |
 
 # License
 
