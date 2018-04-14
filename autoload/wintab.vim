@@ -40,7 +40,7 @@ function! wintab#wintab(wincmd)
 
   " Tmux wintabcmd
   if $TMUX != ''
-    call system('sh ' . $WINTAB_ROOT . a:wincmd)
+    call system('sh ' . $WINTAB_ROOT . "/sh/tmux-wintabcmd " . a:wincmd)
   endif
 endfunction
 
