@@ -20,29 +20,28 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
-function! wintab#on()
-  nmap <c-h> :call wintab#wintab('h')<cr>
-  nmap <c-j> :call wintab#wintab('j')<cr>
-  nmap <c-k> :call wintab#wintab('k')<cr>
-  nmap <c-l> :call wintab#wintab('l')<cr>
-  let s:on = 1
-  echom "Wintab status: on"
-endfunction
+function! wintab#wintab(wincmd)
+  echom $WINTAB_MODE
+  " Vim window
+  let winnum = winnr()
+  execute 'wincmd' a:wincmd
+  if winnum != winnr()
+    return
+  endif
 
-function! wintab#off()
-  nunmap <c-h>
-  nunmap <c-l>
-  nunmap <c-j>
-  nunmap <c-k>
-  let s:on = 0
-  echom "Wintab status: off"
-endfunction
+  " Vim tab
+  if $WINTAB_MODE != "winonly"
+    if tabpagenr() > 1 && a:wincmd == 'h'
+      tabprevious | return
+    elseif tabpagenr() < tabpagenr('$') && a:wincmd == 'l'
+      tabnext | return
+    endif
+  endif
 
-function! wintab#toggle()
-  call function(s:on ? "wintab#off" : "wintab#on")()
+  " Tmux wintabcmd
+  if $TMUX != ''
+    call system('sh ' . $WINTAB_ROOT . a:wincmd)
+  endif
 endfunction
-
-command! -nargs=0 WintabToggle call wintab#toggle()
-silent call wintab#on()
 
 " vim: sw=2
