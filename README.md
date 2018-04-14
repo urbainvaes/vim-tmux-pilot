@@ -15,17 +15,20 @@ Plug 'urbainvaes/vim-wintab'
 ```
 In `~./zshrc`, add:
 ```zsh
-
-source ~/.vim/plugged/vim-wintab/wintab.plugin.zsh
+if [ "$TMUX" != "" ]; then
+    source $WINTAB_ROOT/wintab.plugin.zsh
+fi
 ```
 In `~/.tmux.conf`, add:
 ```tmux
 # Uncomment to disable navigation of tmux windows
 # WINTAB_MODE=winonly
-WINTAB_ROOT=$HOME/Dropbox/projects/vim-wintab
+WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
 source-file $WINTAB_ROOT/wintab.tmux.conf
 ```
-Note that the `$WINTAB_ROOT` environment variable needs to be defined for the plugin to work.
+Note that the `$WINTAB_ROOT` environment variable needs to be defined for the plugin to work,
+and that it is important to use `$HOME` instead of tilde (`~`),
+because tilde expansion won't be performed on `WINTAB_ROOT`.
 
 # Usage
 
@@ -34,7 +37,7 @@ In zsh, this plugin defines keybindings only for normal mode;
 to enable `tmux` navigation in insert mode,
 add the following to your `~/.zshrc`:
 ```zsh
-if ! [ $TMUX = "" ]
+if [ "$TMUX" != "" ]; then
     bindkey "^h" wintabcmd_h
     bindkey "^j" wintabcmd_j
     bindkey "^k" wintabcmd_k
