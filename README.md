@@ -26,22 +26,23 @@ because tilde expansion won't be performed on `WINTAB_ROOT`.
 
 # Usage
 
-## In `vim` outside `tmux`
-In this case,
-all the plugin does is extend the `<ctrl-h>` and `<ctrl-l>` mappings
-to navigate tabs if there is no window to switch to.
-If there is no tab to navigate to, 
-a new one will be created,
-unless `g:wintab_enable_new_tab` is set to 0.
+In `vim` outside of `tmux`,
+this plugin extends the `<ctrl-h>` and `<ctrl-l>` mappings
+to enable navigation of tabs when there is no window to switch to.
+If there is no tab to switch to either,
+a new window or tab will be created,
+depending on the value of `g:wintab_enable_new_tab`.
 
-## In `vim` inside `tmux`
-Set the environment variable `WINTAB_WINONLY` to `winonly` to disable tab navigation in `tmux`.
-
+Inside a `tmux` session,
+the `vim` plugin additionally allows switching to `tmux` panes and windows.
 The order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
 `vim` window → `viw` tab → `tmux` pane → `tmux` window.
 The variable `g:wintab_order` can be used to customize this order;
 one could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
 to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
+
+In `tmux`,
+set the environment variable `WINTAB_MODE` to `winonly` to disable tab navigation in `tmux`.
 
 ## For zsh users: issue navigation only in normal mode
 In `zsh`,
@@ -61,10 +62,21 @@ source-file $WINTAB_ROOT/wintab.tmux.conf
 
 # Customization
 
-| Config                    | Default                             | Description                |
-| ------                    | -------                             | -----------                |
-| `g:wintab_order`          | `['vwin', 'tpane', 'vtab', 'twin']` | Custom order of precedence |
-| `g:wintab_enable_new_tab` | `1` | Create new  |
+In `vim`:
+
+| Config                | Default (other possible values)     | Description                                  |
+| ------                | -------                             | -----------                                  |
+| `g:wintab_order`      | `['vwin', 'tpane', 'vtab', 'twin']` | Order of precedence                          |
+| `g:wintab_enable_new` | `"tab"` (`"win"`, `"no"`)           | Enable creation of new `vim` windows or tabs |
+
+In `tmux`:
+
+| Config                      | Default (other possible values) | Description                                    |
+| ------                      | -------                         | -----------                                    |
+| `WINTAB_ROOT`               | None (must be set)              | Root directory of `vim-wintab`                 |
+| `WINTAB_NEW`                | `win` (`pane`, `no`)            | Enable creation of new `tmux` panes or windows |
+| `WINTAB_MODE`               | `wintab` (`winonly`)            | Set to `winonly` to disable tab navigation     |
+| `WINTAB_DISABLE_ZSH_INSERT` | `"tab"` (`"win"`, `"no"`)       | Disable insert mode keybinding in zsh          |
 
 # License
 

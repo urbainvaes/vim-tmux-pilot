@@ -64,18 +64,15 @@ function! wintab#wintab(wincmd)
 
   endfor
 
-  if get(g:, 'wintab_enable_new', 1) == 0
-    return
-  endif
-
-  if index(order, 'vtab') != -1
+  let enable_new = get(g:, 'wintab_enable_new', 'tab')
+  if enable_new == 'tab'
     if a:wincmd == 'h'
       tabnew
       tabmove 0
     elseif a:wincmd == 'l'
       tabnew
     endif
-  elseif index(order, 'vwin') != -1
+  elseif enable_new == 'win'
     if a:wincmd == 'h'
       topleft vnew
     elseif a:wincmd == 'j'
