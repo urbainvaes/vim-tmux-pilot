@@ -26,25 +26,19 @@ because tilde expansion won't be performed on `WINTAB_ROOT`.
 
 # Usage
 
-In `vim` outside of `tmux`,
+In `vim`,
 this plugin extends the `<ctrl-h>` and `<ctrl-l>` mappings
 to enable navigation of tabs when there is no window to switch to.
 If there is no tab to switch to either,
-a new window or tab will be created,
-depending on the value of `g:wintab_enable_new_tab`.
+a new tab will be created or the focus will move to the opposite tab,
+depending on the value of `g:wintab_tabs_boundary`.
 
-Inside a `tmux` session,
-the `vim` plugin additionally allows switching to `tmux` panes and windows.
-The order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
+When using `vim` inside a `tmux` session,
+the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
 `vim` window → `viw` tab → `tmux` pane → `tmux` window.
-The variable `g:wintab_order` can be used to customize this order;
-one could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
-to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
+The variable `g:wintab_precedence` can be set to `'vtab'` to swap the positions of `vim` tabs  and `tmux` panes in the order of precedence.
 
-In `tmux`,
-set the environment variable `WINTAB_MODE` to `winonly` to disable tab navigation in `tmux`.
-
-## For zsh users: issue navigation only in normal mode
+## For zsh users
 In `zsh`,
 If you want the keybindings to be available only in normal mode,
 add the following to your `~./zshrc`,
@@ -53,9 +47,9 @@ if [ "$TMUX" != "" ]; then
     source $WINTAB_ROOT/wintab.plugin.zsh
 fi
 ```
-and define `WINTAB_DISABLE_ZSH_INSERT=1` in your `~/.tmux.conf`:
+and define `WINTAB_EXCLUDE_ZSH=1` in your `~/.tmux.conf`:
 ```tmux
-WINTAB_DISABLE_ZSH_INSERT=1
+WINTAB_EXCLUDE_ZSH=1
 WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
 source-file $WINTAB_ROOT/wintab.tmux.conf
 ```
@@ -64,19 +58,20 @@ source-file $WINTAB_ROOT/wintab.tmux.conf
 
 In `vim`:
 
-| Config                | Default (other possible values)     | Description                                  |
-| ------                | -------                             | -----------                                  |
-| `g:wintab_order`      | `['vwin', 'tpane', 'vtab', 'twin']` | Order of precedence                          |
-| `g:wintab_enable_new` | `"tab"` (`"win"`, `"no"`)           | Enable creation of new `vim` windows or tabs |
+| Config                | Default (other values)   | Description                                |
+| ------                | -------                  | -----------                                |
+| `g:wintab_mode`       | `'wintab'` (`'winonly`') | Mode of operation                          |
+| `g:wintab_boundary`   | `'reflect'` (`'create'`) | Behaviour when no tab is available         |
+| `g:wintab_precedence` | `'tpane'` (`'vtab'`)     | Precedence between vim tabs and tmux panes |
 
 In `tmux`:
 
-| Config                      | Default (other possible values) | Description                                    |
-| ------                      | -------                         | -----------                                    |
-| `WINTAB_ROOT`               | None (must be set)              | Root directory of `vim-wintab`                 |
-| `WINTAB_NEW`                | `win` (`pane`, `no`)            | Enable creation of new `tmux` panes or windows |
-| `WINTAB_MODE`               | `wintab` (`winonly`)            | Set to `winonly` to disable tab navigation     |
-| `WINTAB_DISABLE_ZSH_INSERT` | `"tab"` (`"win"`, `"no"`)       | Disable insert mode keybinding in zsh          |
+| Config               | Default (other possible values) | Description                           |
+| ------               | -------                         | -----------                           |
+| `WINTAB_MODE`        | `wintab` (`winonly`)            | Mode of operation                     |
+| `WINTAB_BOUNDARY`    | `reflect` (`create`, `ignore`)  | Behaviour when no tab is available    |
+| `WINTAB_ROOT`        | None (must be set)              | Root directory of `vim-wintab`        |
+| `WINTAB_EXCLUDE_ZSH` | empty (`1`)                     | Disable insert mode keybinding in zsh |
 
 # License
 

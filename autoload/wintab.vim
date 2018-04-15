@@ -20,6 +20,10 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
+let s:default_precedence = 'tpane'
+let s:default_mode = 'wintab'
+let s:default_boundary = 'reflect'
+
 function! s:get_tmux_cmd(wincmd)
   if $TMUX == ""
     return ""
@@ -32,8 +36,17 @@ function! s:get_tmux_cmd(wincmd)
 endfunction
 
 function! wintab#wintab(wincmd)
-  let order = get(g:, 'wintab_order', ['vwin', 'tpane', 'vtab', 'twin'])
+
+  let precedence = get(g:, 'wintab_precedence', s:default_precedence)
+  let mode = get(g:, 'wintab_mode', s:default_mode)
+  let boundary = get(g:, 'wintab_boundary', s:default_boundary)
   let s:tmux_cmd=""
+
+  if precedence == 'vtab'
+    let order = ['vwin', 'vtab', 'tpane', 'twin']
+  else
+    let order = ['vwin', 'tpane', 'vtab', 'twin']
+  endif
 
   for elem in order
 
@@ -50,7 +63,7 @@ function! wintab#wintab(wincmd)
       call system(s:tmux_cmd) | return
 
     " Vim tab
-    elseif elem == 'vtab'
+    elseif mode == 'wintab' && elem == 'vtab'
       if tabpagenr() > 1 && a:wincmd == 'h'
         tabprevious | return
       elseif tabpagenr() < tabpagenr('$') && a:wincmd == 'l'
@@ -64,23 +77,18 @@ function! wintab#wintab(wincmd)
 
   endfor
 
-  let enable_new = get(g:, 'wintab_enable_new', 'tab')
-  if enable_new == 'tab'
-    if a:wincmd == 'h'
+  if mode == 'wintab'
+    if boundary == 'create'
       tabnew
-      tabmove 0
-    elseif a:wincmd == 'l'
-      tabnew
-    endif
-  elseif enable_new == 'win'
-    if a:wincmd == 'h'
-      topleft vnew
-    elseif a:wincmd == 'j'
-      botright new
-    elseif a:wincmd == 'k'
-      topleft new
-    elseif a:wincmd == 'l'
-      botright vnew
+      if a:wincmd == 'h'
+        tabmove 0
+      endif
+    elseif boundary == 'reflect'
+      if a:wincmd == 'h'
+        tabprevious
+      elseif a:wincmd == 'l'
+        tabnext
+      endif
     endif
   endif
 

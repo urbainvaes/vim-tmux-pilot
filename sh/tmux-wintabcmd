@@ -21,6 +21,9 @@
 # THE SOFTWARE.
 #!/bin/sh
 
+BOUNDARY=${WINTAB_BOUNDARY:-reflect}
+MODE=${WINTAB_MODE:-wintab}
+
 function send {
     echo "$1" "$2" >> ~/.wintab_log
     if [ "$2" = "dry" ]; then
@@ -48,45 +51,31 @@ if [ "$no_neighbour" = 0 ]; then
     send "tmux select-pane -$pane_cmd" "$dryrun"
 fi
 
-# select-window
-if [ "$WINTAB_MODE" != 'winonly' ]; then
+if [ "$MODE" != 'winonly' ]; then
 
+    # select-window
     case $key in
-        "h" ) win_cmd=p ;;
-        "l" ) win_cmd=n ;;
+        "h" ) win_cmd=p; select_cmd=head ;;
+        "l" ) win_cmd=n; select_cmd=tail ;;
     esac
 
     iwin=$(tmux run-shell "echo #{window_index}")
     nwin=$(tmux run-shell "echo #{session_windows}")
-
-    if [ "$key" = l ] && [ "$iwin" -lt $(( nwin - 1 )) ] \
-        || { [ "$key" = h ] && [ "$iwin" -gt 0 ]; }; then
+    extreme_win=$(tmux list-windows -F "#{window_index}" | $select_cmd -1)
+    if [ "$iwin" != "$extreme_win" ] || [ "$BOUNDARY" = reflect ] && [ "$nwin" -gt 1 ]; then
         send "tmux select-window -$win_cmd" "$dryrun"
     fi
-fi
 
-# new pane
-if [ "${WINTAB_NEW:-win}" = pane ]; then
+    # new window
+    if [ "$BOUNDARY" = create ]; then
 
-    case $key in
-        "h" ) split_cmd=bh ;;
-        "j" ) split_cmd=v  ;;
-        "k" ) split_cmd=bv ;;
-        "l" ) split_cmd=h  ;;
-    esac
+        case $key in
+            "h" ) new_cmd="tmux new-window -ad; tmux swap-window -s $(( iwin + 1 )) -t $iwin" ;;
+            "l" ) new_cmd="tmux new-window -a" ;;
+        esac
 
-    send "tmux split-window -$split_cmd" "$dryrun"
-fi
-
-# new window
-if [ "${WINTAB_NEW:-win}" = win ]; then
-
-    case $key in
-        "h" ) new_cmd="tmux new-window -ad; tmux swap-window -s 1 -t 0" ;;
-        "l" ) new_cmd="tmux new-window -a" ;;
-    esac
-
-    send "$new_cmd" "$dryrun"
+        send "$new_cmd" "$dryrun"
+    fi
 fi
 
 send "tmux send-keys C-$key" "$dryrun"
