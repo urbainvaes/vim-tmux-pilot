@@ -21,7 +21,7 @@
 " THE SOFTWARE.
 
 let s:default_precedence = 'tpane'
-let s:default_mode = 'wintab'
+let s:default_mode = 'winonly'
 let s:default_boundary = 'reflect'
 
 function! s:get_tmux_cmd(wincmd)
@@ -77,7 +77,17 @@ function! wintab#wintab(wincmd)
 
   endfor
 
-  if mode == 'wintab'
+  if mode == 'winonly'
+    if a:wincmd == 'h'
+      topleft vnew
+    elseif a:wincmd == 'j'
+      botright new
+    elseif a:wincmd == 'k'
+      topleft new
+    elseif a:wincmd == 'l'
+      botright vnew
+    endif
+  elseif mode == 'wintab'
     if boundary == 'create'
       tabnew
       if a:wincmd == 'h'
