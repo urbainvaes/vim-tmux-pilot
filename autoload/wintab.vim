@@ -32,7 +32,7 @@ function! s:get_tmux_cmd(wincmd)
 endfunction
 
 function! wintab#wintab(wincmd)
-  let order = get(g:, 'wintab_order', ['vwin', 'vtab', 'tpane', 'twin'])
+  let order = get(g:, 'wintab_order', ['vwin', 'tpane', 'vtab', 'twin'])
   let s:tmux_cmd=""
 
   for elem in order
@@ -63,6 +63,29 @@ function! wintab#wintab(wincmd)
     endif
 
   endfor
+
+  if get(g:, 'wintab_enable_new', 1) == 0
+    return
+  endif
+
+  if index(order, 'vtab') != -1
+    if a:wincmd == 'h'
+      tabnew
+      tabmove 0
+    elseif a:wincmd == 'l'
+      tabnew
+    endif
+  elseif index(order, 'vwin') != -1
+    if a:wincmd == 'h'
+      topleft vnew
+    elseif a:wincmd == 'j'
+      botright new
+    elseif a:wincmd == 'k'
+      topleft new
+    elseif a:wincmd == 'l'
+      botright vnew
+    endif
+  endif
 
 endfunction
 

@@ -26,6 +26,15 @@ because tilde expansion won't be performed on `WINTAB_ROOT`.
 
 # Usage
 
+## In `vim` outside `tmux`
+In this case,
+all the plugin does is extend the `<ctrl-h>` and `<ctrl-l>` mappings
+to navigate tabs if there is no window to switch to.
+If there is no tab to navigate to, 
+a new one will be created,
+unless `g:wintab_enable_new_tab` is set to 0.
+
+## In `vim` inside `tmux`
 Set the environment variable `WINTAB_WINONLY` to `winonly` to disable tab navigation in `tmux`.
 
 The order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
@@ -34,6 +43,7 @@ The variable `g:wintab_order` can be used to customize this order;
 one could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
 to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
 
+## For zsh users: issue navigation only in normal mode
 In `zsh`,
 If you want the keybindings to be available only in normal mode,
 add the following to your `~./zshrc`,
@@ -51,9 +61,10 @@ source-file $WINTAB_ROOT/wintab.tmux.conf
 
 # Customization
 
-| Config           | Default                             | Description                |
-| ------           | -------                             | -----------                |
-| `g:wintab_order` | `['vwin', 'tpane', 'vtab', 'twin']` | Custom order of precedence |
+| Config                    | Default                             | Description                |
+| ------                    | -------                             | -----------                |
+| `g:wintab_order`          | `['vwin', 'tpane', 'vtab', 'twin']` | Custom order of precedence |
+| `g:wintab_enable_new_tab` | `1` | Create new  |
 
 # License
 
