@@ -46,13 +46,17 @@ if [ "$no_neighbour" = 0 ]; then
     send "tmux select-pane -$pane_cmd" "$dryrun"
 fi
 
-n_windows=$(tmux run-shell "echo #{session_windows}")
-if [ "$WINTAB_MODE" = 'winonly' ] \
-    || [ "$key" = j ] || [ "$key" = k ] \
-    || [ "$n_windows" = 1 ]; then
+if [ "$WINTAB_MODE" = 'winonly' ]; then
     send "tmux send-keys C-$key" "$dryrun"
 fi
 
-send "tmux select-window -$win_cmd" "$dryrun"
+iwin=$(tmux run-shell "echo #{window_index}")
+nwin=$(tmux run-shell "echo #{session_windows}")
+if [ "$key" = l ] && [ "$iwin" -lt $(( nwin - 1 )) ] \
+    || { [ "$key" = h ] && [ "$iwin" -gt 0 ]; }; then
+    send "tmux select-window -$win_cmd" "$dryrun"
+fi
+
+send "tmux send-keys C-$key" "$dryrun"
 
 # vim: ft=sh
