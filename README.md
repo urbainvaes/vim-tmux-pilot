@@ -13,12 +13,6 @@ In `~/.vimrc`, add:
 ```vim
 Plug 'urbainvaes/vim-wintab'
 ```
-In `~./zshrc`, add:
-```zsh
-if [ "$TMUX" != "" ]; then
-    source $WINTAB_ROOT/wintab.plugin.zsh
-fi
-```
 In `~/.tmux.conf`, add:
 ```tmux
 # Uncomment to disable navigation of tmux windows
@@ -33,22 +27,27 @@ because tilde expansion won't be performed on `WINTAB_ROOT`.
 # Usage
 
 Set the environment variable `WINTAB_WINONLY` to `winonly` to disable tab navigation in `tmux`.
-In zsh, this plugin defines keybindings only for normal mode;
-to enable `tmux` navigation in insert mode,
-add the following to your `~/.zshrc`:
-```zsh
-if [ "$TMUX" != "" ]; then
-    bindkey "^h" wintabcmd_h
-    bindkey "^j" wintabcmd_j
-    bindkey "^k" wintabcmd_k
-    bindkey "^l" wintabcmd_l
-fi
-```
+
 The order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
 `vim` window → `viw` tab → `tmux` pane → `tmux` window.
 The variable `g:wintab_order` can be used to customize this order;
 one could for example set `g:wintab_order` to `['vwin', 'tpane', 'twin']`,
 to give priority to `vim` windows (`'vwin'`), then `tmux` panes (`'tpane'`), then `tmux` windows (`'twin'`).
+
+In `zsh`,
+If you want the keybindings to be available only in normal mode,
+add the following to your `~./zshrc`,
+```zsh
+if [ "$TMUX" != "" ]; then
+    source $WINTAB_ROOT/wintab.plugin.zsh
+fi
+```
+and define `WINTAB_DISABLE_ZSH_INSERT=1` in your `~/.tmux.conf`:
+```tmux
+WINTAB_DISABLE_ZSH_INSERT=1
+WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
+source-file $WINTAB_ROOT/wintab.tmux.conf
+```
 
 # Customization
 
