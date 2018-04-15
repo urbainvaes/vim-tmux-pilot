@@ -39,10 +39,10 @@ dryrun=$2
 
 # select-pane
 case $key in
-    "h" ) direction=left;  pane_cmd=L ;;
-    "j" ) direction=down;  pane_cmd=D ;;
-    "k" ) direction=up;    pane_cmd=U ;;
-    "l" ) direction=right; pane_cmd=R ;;
+    "h" ) direction=left;   pane_cmd=L ;;
+    "j" ) direction=bottom; pane_cmd=D ;;
+    "k" ) direction=top;    pane_cmd=U ;;
+    "l" ) direction=right;  pane_cmd=R ;;
 esac
 
 no_neighbour=$(tmux run-shell "echo #{pane_at_$direction}")
