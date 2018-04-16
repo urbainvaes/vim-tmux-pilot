@@ -77,31 +77,39 @@ function! wintab#wintab(wincmd)
 
   endfor
 
-  if mode == 'winonly'
-    if boundary == 'create'
+  if boundary == 'create'
+    if a:wincmd == 'j'
+      rightbelow new
+    elseif a:wincmd == 'k'
+      leftabove new
+    endif
+    if mode == 'winonly'
       if a:wincmd == 'h'
         leftabove vnew
-      elseif a:wincmd == 'j'
-        rightbelow new
-      elseif a:wincmd == 'k'
-        leftabove new
       elseif a:wincmd == 'l'
         rightbelow vnew
       endif
-    endif
-  elseif mode == 'wintab'
-    if boundary == 'create'
+    elseif mode == 'wintab'
       if a:wincmd == 'h'
         tabnew
         tabmove 0
-      elseif a:wincmd == 'j'
-        rightbelow new
-      elseif a:wincmd == 'k'
-        leftabove new
       elseif a:wincmd == 'l'
         tabnew
       endif
-    elseif boundary == 'reflect'
+    endif
+  elseif boundary == 'reflect'
+    if a:wincmd == 'j'
+      5wincmd k
+    elseif a:wincmd == 'k'
+      5wincmd j
+    endif
+    if mode == 'winonly'
+      if a:wincmd == 'h'
+        5wincmd l
+      elseif a:wincmd == 'l'
+        5wincmd h
+      endif
+    elseif mode == 'wintab'
       if a:wincmd == 'h'
         tabprevious
       elseif a:wincmd == 'l'
