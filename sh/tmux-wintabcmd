@@ -38,7 +38,7 @@ key=$1
 dryrun=$2
 
 # select-pane
-case $key in
+case "$key" in
     "h" ) direction=left;   pane_cmd=L ;;
     "j" ) direction=bottom; pane_cmd=D ;;
     "k" ) direction=top;    pane_cmd=U ;;
@@ -53,7 +53,7 @@ fi
 
 if [ "$MODE" = 'winonly' ]; then
     if [ "$BOUNDARY" = create ]; then
-        case $key in
+        case "$key" in
             "h" ) split_cmd=bh ;;
             "j" ) split_cmd=v  ;;
             "k" ) split_cmd=bv ;;
@@ -66,25 +66,26 @@ if [ "$MODE" = 'winonly' ]; then
 
 else
     # select-window
-    case $key in
-        "h" ) win_cmd=p; select_cmd="head" ;;
-        "l" ) win_cmd=n; select_cmd="tail" ;;
-    esac
+    if [ "$key" = h ] || [ "$key" = l ]; then
+        case "$key" in
+            "h" ) win_cmd=p; select_cmd="head" ;;
+            "l" ) win_cmd=n; select_cmd="tail" ;;
+        esac
 
-    iwin=$(tmux run-shell "echo #{window_index}")
-    nwin=$(tmux run-shell "echo #{session_windows}")
-    extreme_win=$(tmux list-windows -F "#{window_index}" | $select_cmd -1)
-    if [ "$iwin" != "$extreme_win" ] || [ "$BOUNDARY" = reflect ] && [ "$nwin" -gt 1 ]; then
-        send "tmux select-window -$win_cmd" "$dryrun"
+        iwin=$(tmux run-shell "echo #{window_index}")
+        nwin=$(tmux run-shell "echo #{session_windows}")
+        extreme_win=$(tmux list-windows -F "#{window_index}" | $select_cmd -1)
+        if [ "$iwin" != "$extreme_win" ] || [ "$BOUNDARY" = reflect ] && [ "$nwin" -gt 1 ]; then
+            send "tmux select-window -$win_cmd" "$dryrun"
+        fi
     fi
 
-    # new window
     if [ "$BOUNDARY" = create ]; then
 
         case $key in
             "h" ) new_cmd="tmux new-window -ad; tmux swap-window -s $(( iwin + 1 )) -t $iwin" ;;
             "j" ) new_cmd="tmux split-window -v" ;;
-            "k" ) split_cmd="tmux split-window -bv" ;;
+            "k" ) new_cmd="tmux split-window -bv" ;;
             "l" ) new_cmd="tmux new-window -a" ;;
         esac
 

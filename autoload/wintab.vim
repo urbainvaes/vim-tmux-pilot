@@ -83,12 +83,14 @@ function! wintab#wintab(wincmd)
     elseif a:wincmd == 'k'
       leftabove new
     endif
+
     if mode == 'winonly'
       if a:wincmd == 'h'
         leftabove vnew
       elseif a:wincmd == 'l'
         rightbelow vnew
       endif
+
     elseif mode == 'wintab'
       if a:wincmd == 'h'
         tabnew
@@ -97,18 +99,21 @@ function! wintab#wintab(wincmd)
         tabnew
       endif
     endif
+
   elseif boundary == 'reflect'
     if a:wincmd == 'j'
       5wincmd k
     elseif a:wincmd == 'k'
       5wincmd j
     endif
+
     if mode == 'winonly'
       if a:wincmd == 'h'
         5wincmd l
       elseif a:wincmd == 'l'
         5wincmd h
       endif
+
     elseif mode == 'wintab'
       if a:wincmd == 'h'
         tabprevious
