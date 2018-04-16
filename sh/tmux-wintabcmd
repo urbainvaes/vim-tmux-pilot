@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 #!/bin/sh
 
-BOUNDARY=${WINTAB_BOUNDARY:-reflect}
+BOUNDARY=${WINTAB_BOUNDARY:-ignore}
 MODE=${WINTAB_MODE:-winonly}
 
 function send {
@@ -83,6 +83,8 @@ else
 
         case $key in
             "h" ) new_cmd="tmux new-window -ad; tmux swap-window -s $(( iwin + 1 )) -t $iwin" ;;
+            "j" ) new_cmd="tmux split-window -v" ;;
+            "k" ) split_cmd="tmux split-window -bv" ;;
             "l" ) new_cmd="tmux new-window -a" ;;
         esac
 

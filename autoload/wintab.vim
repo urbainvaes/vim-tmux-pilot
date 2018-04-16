@@ -22,7 +22,7 @@
 
 let s:default_precedence = 'tpane'
 let s:default_mode = 'winonly'
-let s:default_boundary = 'reflect'
+let s:default_boundary = 'ignore'
 
 function! s:get_tmux_cmd(wincmd)
   if $TMUX == ""
@@ -78,20 +78,28 @@ function! wintab#wintab(wincmd)
   endfor
 
   if mode == 'winonly'
-    if a:wincmd == 'h'
-      topleft vnew
-    elseif a:wincmd == 'j'
-      botright new
-    elseif a:wincmd == 'k'
-      topleft new
-    elseif a:wincmd == 'l'
-      botright vnew
+    if boundary == 'create'
+      if a:wincmd == 'h'
+        leftabove vnew
+      elseif a:wincmd == 'j'
+        rightbelow new
+      elseif a:wincmd == 'k'
+        leftabove new
+      elseif a:wincmd == 'l'
+        rightbelow vnew
+      endif
     endif
   elseif mode == 'wintab'
     if boundary == 'create'
-      tabnew
       if a:wincmd == 'h'
+        tabnew
         tabmove 0
+      elseif a:wincmd == 'j'
+        rightbelow new
+      elseif a:wincmd == 'k'
+        leftabove new
+      elseif a:wincmd == 'l'
+        tabnew
       endif
     elseif boundary == 'reflect'
       if a:wincmd == 'h'
