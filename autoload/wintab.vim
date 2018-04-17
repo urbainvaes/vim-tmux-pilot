@@ -23,14 +23,15 @@
 let s:default_precedence = 'tpane'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
+let s:path = expand('<sfile>:p:h')
 
 function! s:get_tmux_cmd(wincmd)
   if $TMUX == ""
     return ""
   elseif s:tmux_cmd == ""
     let argument = a:wincmd . " dry"
-    let script = $WINTAB_ROOT . "/sh/tmux-wintabcmd"
-    let s:tmux_cmd=system('sh '.script." ".a:wincmd." dry")
+    let script = s:path . "/../sh/tmux-wintabcmd"
+    let s:tmux_cmd = system('sh '.script." ".a:wincmd." dry")
   endif
   return s:tmux_cmd
 endfunction
@@ -76,6 +77,10 @@ function! wintab#wintab(wincmd)
     endif
 
   endfor
+
+  if s:get_tmux_cmd(a:wincmd) !~ "send-keys"
+    call system(s:tmux_cmd)
+  return
 
   if boundary == 'create'
     if a:wincmd == 'j'
