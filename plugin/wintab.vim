@@ -20,11 +20,36 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
+function! s:insert()
+  norm a
+  augroup wintab
+    autocmd! BufEnter <buffer>
+  augroup END
+endfunction
+
+let s:count = 0
+function! wintab#terminal(wincmd)
+  let s:count =  s:count + 1
+  augroup wintab
+    autocmd!
+    autocmd BufEnter <buffer> call s:insert()
+  augroup END
+  call wintab#wintab(a:wincmd)
+endfunction
+
 function! wintab#on()
   nnoremap <silent> <c-h> :call wintab#wintab('h')<cr>
   nnoremap <silent> <c-j> :call wintab#wintab('j')<cr>
   nnoremap <silent> <c-k> :call wintab#wintab('k')<cr>
   nnoremap <silent> <c-l> :call wintab#wintab('l')<cr>
+
+  if has("nvim")
+    tnoremap <silent> <c-h> <c-\><c-n>:call wintab#terminal('h')<cr>
+    tnoremap <silent> <c-j> <c-\><c-n>:call wintab#terminal('j')<cr>
+    tnoremap <silent> <c-k> <c-\><c-n>:call wintab#terminal('k')<cr>
+    tnoremap <silent> <c-l> <c-\><c-n>:call wintab#terminal('l')<cr>
+  endif
+
   let s:on = 1
   echom "Wintab status: on"
 endfunction
@@ -43,6 +68,8 @@ function! wintab#toggle()
 endfunction
 
 command! -nargs=0 WintabToggle call wintab#toggle()
+command! -nargs=1 Wintabcmd call wintab#wintab(<f-args>)
+
 silent call wintab#on()
 
 " vim: sw=2

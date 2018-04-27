@@ -78,9 +78,9 @@ function! wintab#wintab(wincmd)
 
   endfor
 
-  if s:get_tmux_cmd(a:wincmd) !~ "send-keys"
-    call system(s:tmux_cmd)
-  return
+  if s:tmux_cmd != "" && s:tmux_cmd !~ "send-keys"
+    call system(s:tmux_cmd) | return
+  endif
 
   if boundary == 'create'
     if a:wincmd == 'j'

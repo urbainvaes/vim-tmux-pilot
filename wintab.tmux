@@ -22,9 +22,8 @@
 
 TMUX_WINTABCMD=$WINTAB_ROOT/sh/tmux-wintabcmd
 
-# From vim-tmux-navigator
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'"
 
 is_shell="[ '$WINTAB_EXCLUDE_ZSH' == 1 ] \
           && ps -o tpgid= -o pid= -o comm= -t '#{pane_tty}' \
