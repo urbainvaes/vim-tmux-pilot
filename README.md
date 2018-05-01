@@ -8,9 +8,9 @@ It can additionally be configured to automatically create a container when reach
 # Terminology
 
 To avoid ambiguities,
-we use the simplified terminology {`vim`,`tmux`}-{splits,tabs},
-abbreviated {v,t}{splits,tabs},
-to refer to `vim` windows, `vim` tabs, `tmux` panes and `tmux` windows, respectively.
+we use the simplified terminology {`vim`,`tmux`}-{splits,tabs} and
+the abbreviations {v,t}{splits,tabs}
+to refer to {`vim`-{windows,tabs},`tmux`-{panes,windows}}, respectively.
 The term "navigation space" is used to refer to the set of containers that can be accessed via the keys `c-{h,j,k,l}`.
 
 # Installation
@@ -76,8 +76,8 @@ based on the configuration variables `g:wintab_boundary` and `WINTAB_BOUNDARY`:
   or the key will be sent to the program is none is available.
 
 - If the behaviour at the boundary is set to **ignore**,
-  the key is simply ignored (in `vim`) or,
-  in `tmux`, fed to the program running in the container.
+  the key is simply ignored (in `vim`)
+  or fed to the program running in the container (in `tmux`).
 
 Internally, the `tmux` command `showenv [-g]` is used to read configuration variables in `tmux`.
 This means that these variables can changed on the fly from within `tmux`
@@ -92,7 +92,6 @@ For example, in a shell:
 > # Set WINTAB_BOUNDARY to 'reflect' for other sessions
 > tmux setenv -g WINTAB_BOUNDARY reflect
 ```
-Locally defined environment variable
 
 # Customization
 
@@ -110,12 +109,8 @@ In `tmux`:
 | ------               | -------                        | -----------                           |
 | `WINTAB_MODE`        | `wintab` (`winonly`)           | Mode of operation                     |
 | `WINTAB_BOUNDARY`    | `reflect` (`create`, `ignore`) | Boundary condition                    |
-| `WINTAB_ROOT`        | None (must be set)             | Root directory of `vim-wintab`        |
-| `WINTAB_EXCLUDE_ZSH` | empty (`1`)                    | Disable insert mode keybinding in zsh |
-
-# Known issues
-
-- [ ] `fzf` is not detected in `vim`.
+| `WINTAB_ROOT`        | Empty (must be set)            | Root directory of `vim-wintab`        |
+| `WINTAB_EXCLUDE_ZSH` | Empty (`1`)                    | Disable insert mode keybinding in zsh |
 
 # For zsh users
 
