@@ -20,23 +20,23 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
-let s:default_precedence = 'tpane'
+let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
 let s:path = expand('<sfile>:p:h')
 
-function! s:get_tmux_cmd(wincmd)
+function! s:get_tmux_cmd(cmd)
   if $TMUX == ""
     return ""
   elseif s:tmux_cmd == ""
-    let argument = a:wincmd . " dry"
+    let argument = a:cmd . " dry"
     let script = s:path . "/../sh/tmux-wintabcmd"
-    let s:tmux_cmd = system('sh '.script." ".a:wincmd." dry")
+    let s:tmux_cmd = system('sh '.script." ".a:cmd." dry")
   endif
   return s:tmux_cmd
 endfunction
 
-function! wintab#wintab(wincmd)
+function! wintab#wintab(cmd)
 
   let precedence = get(g:, 'wintab_precedence', s:default_precedence)
   let mode = get(g:, 'wintab_mode', s:default_mode)
@@ -44,88 +44,93 @@ function! wintab#wintab(wincmd)
   let s:tmux_cmd=""
 
   if precedence == 'vtab'
-    let order = ['vwin', 'vtab', 'tpane', 'twin']
+    let order = ['vsplit', 'vtab', 'tsplit', 'ttab']
   else
-    let order = ['vwin', 'tpane', 'vtab', 'twin']
+    let order = ['vsplit', 'tsplit', 'vtab', 'ttab']
   endif
 
   for elem in order
 
     " Vim window
-    if elem == 'vwin'
+    if elem == 'vsplit'
       let winnum = winnr()
-      execute 'wincmd' a:wincmd
+      execute 'wincmd' a:cmd
       if winnum != winnr()
         return
       endif
 
     " Tmux pane
-    elseif elem == 'tpane' && s:get_tmux_cmd(a:wincmd) =~ "select-pane"
+    elseif elem == 'tsplit' && s:get_tmux_cmd(a:cmd) =~ "select-pane"
       call system(s:tmux_cmd) | return
 
     " Vim tab
     elseif mode == 'wintab' && elem == 'vtab'
-      if tabpagenr() > 1 && a:wincmd == 'h'
+      if tabpagenr() > 1 && a:cmd == 'h'
         tabprevious | return
-      elseif tabpagenr() < tabpagenr('$') && a:wincmd == 'l'
+      elseif tabpagenr() < tabpagenr('$') && a:cmd == 'l'
         tabnext | return
       endif
 
     " Tmux window
-    elseif elem == 'twin' && s:get_tmux_cmd(a:wincmd) =~ "select-window"
+    elseif elem == 'twin' && s:get_tmux_cmd(a:cmd) =~ "select-window"
       call system(s:tmux_cmd) | return
     endif
 
   endfor
 
+  " Will always create tmux-pane before vim-tab!
+  " Zoom!
   if s:tmux_cmd != "" && s:tmux_cmd !~ "send-keys"
     call system(s:tmux_cmd) | return
   endif
 
   if boundary == 'create'
-    if a:wincmd == 'j'
+    if a:cmd == 'j'
       rightbelow new
-    elseif a:wincmd == 'k'
+    elseif a:cmd == 'k'
       leftabove new
     endif
 
     if mode == 'winonly'
-      if a:wincmd == 'h'
+      if a:cmd == 'h'
         leftabove vnew
-      elseif a:wincmd == 'l'
+      elseif a:cmd == 'l'
         rightbelow vnew
       endif
 
     elseif mode == 'wintab'
-      if a:wincmd == 'h'
+      if a:cmd == 'h'
         tabnew
         tabmove 0
-      elseif a:wincmd == 'l'
+      elseif a:cmd == 'l'
         tabnew
       endif
     endif
 
   elseif boundary == 'reflect'
-    if a:wincmd == 'j'
+    if a:cmd == 'j'
       5wincmd k
-    elseif a:wincmd == 'k'
+    elseif a:cmd == 'k'
       5wincmd j
     endif
 
-    if mode == 'winonly'
-      if a:wincmd == 'h'
-        5wincmd l
-      elseif a:wincmd == 'l'
-        5wincmd h
-      endif
-
-    elseif mode == 'wintab'
-      if a:wincmd == 'h'
+    if mode == 'wintab' &&  tabpagenr('$') > 1
+      if a:cmd == 'h'
         tabprevious
-      elseif a:wincmd == 'l'
+      elseif a:cmd == 'l'
         tabnext
       endif
+
+    else
+      if a:cmd == 'h'
+        5wincmd l
+      elseif a:cmd == 'l'
+        5wincmd h
+      endif
     endif
+
+  elseif boundary == 'ignore'
+    call feedkeys("\<c-".a:cmd, 'n')
   endif
 
 endfunction

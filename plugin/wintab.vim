@@ -29,6 +29,8 @@ endfunction
 
 let s:count = 0
 function! wintab#terminal(wincmd)
+  " ps -o state= -o comm= -t '#{pane_tty}' \
+  "     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'
   let s:count =  s:count + 1
   augroup wintab
     autocmd!
@@ -59,6 +61,14 @@ function! wintab#off()
   nunmap <c-l>
   nunmap <c-j>
   nunmap <c-k>
+
+  if has("nvim")
+    tunmap <silent> <c-h>
+    tunmap <silent> <c-j>
+    tunmap <silent> <c-k>
+    tunmap <silent> <c-l>
+  endif
+
   let s:on = 0
   echom "Wintab status: off"
 endfunction
