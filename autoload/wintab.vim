@@ -116,7 +116,7 @@ function! wintab#wintab(cmd)
         tabnext | return
       endif
 
-    elseif type == 'twin' && s:get_tmux_cmd(a:cmd) =~ "select-window"
+    elseif type == 'ttab' && s:get_tmux_cmd(a:cmd) =~ "select-window"
       call system(s:tmux_cmd) | return
     endif
 

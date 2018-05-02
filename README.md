@@ -1,4 +1,4 @@
-# Wintab
+# Vim-tmux-pilot (previously Vim-tmux-wintab)
 
 Inspired by [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator),
 this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` or `tmux` tabs when no `vim` or `tmux` split is available,
