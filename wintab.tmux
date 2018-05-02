@@ -38,4 +38,9 @@ bind -n C-k if-shell "$is_shell || $is_vim" "send-keys C-k" \
 bind -n C-l if-shell "$is_shell || $is_vim" "send-keys C-l" \
          "run-shell 'sh $TMUX_WINTABCMD l'"
 
+bind-key -T copy-mode-vi C-h run-shell 'sh $TMUX_WINTABCMD h'
+bind-key -T copy-mode-vi C-j run-shell 'sh $TMUX_WINTABCMD j'
+bind-key -T copy-mode-vi C-k run-shell 'sh $TMUX_WINTABCMD k'
+bind-key -T copy-mode-vi C-l run-shell 'sh $TMUX_WINTABCMD l'
+
 # vim: ft=tmux
