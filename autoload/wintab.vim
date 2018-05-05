@@ -24,6 +24,7 @@ let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
 let s:path = expand('<sfile>:p:h')
+let s:keys = { "h": "\<c-h", "l": "\<c-l>", "j": "\<c-j>", "k": "\<c-k>" }
 
 function! s:get_tmux_cmd(cmd)
   if $TMUX == ""
@@ -84,7 +85,10 @@ function! s:vim_boundary(cmd, mode, boundary)
   return ""
 endfunction
 
-function! wintab#wintab(cmd)
+function! wintab#wintab(...)
+
+  let cmd = a:1
+  let in_terminal = a:0 > 1 ? 1 : 0
 
   let precedence = get(g:, 'wintab_precedence', s:default_precedence)
   let mode = get(g:, 'wintab_mode', s:default_mode)
@@ -101,28 +105,28 @@ function! wintab#wintab(cmd)
 
     if type == 'vsplit'
       let winnum = winnr()
-      execute 'wincmd' a:cmd
+      execute 'wincmd' cmd
       if winnum != winnr()
         return
       endif
 
-    elseif type == 'tsplit' && s:get_tmux_cmd(a:cmd) =~ "select-pane"
+    elseif type == 'tsplit' && s:get_tmux_cmd(cmd) =~ "select-pane"
       call system(s:tmux_cmd) | return
 
     elseif mode == 'wintab' && type == 'vtab'
-      if tabpagenr() > 1 && a:cmd == 'h'
+      if tabpagenr() > 1 && cmd == 'h'
         tabprevious | return
-      elseif tabpagenr() < tabpagenr('$') && a:cmd == 'l'
+      elseif tabpagenr() < tabpagenr('$') && cmd == 'l'
         tabnext | return
       endif
 
-    elseif type == 'ttab' && s:get_tmux_cmd(a:cmd) =~ "select-window"
+    elseif type == 'ttab' && s:get_tmux_cmd(cmd) =~ "select-window"
       call system(s:tmux_cmd) | return
     endif
 
   endfor
 
-  let vim_cmd = s:vim_boundary(a:cmd, mode, boundary)
+  let vim_cmd = s:vim_boundary(cmd, mode, boundary)
   for type in reverse(order)
 
     if type == 'ttab'
@@ -144,7 +148,11 @@ function! wintab#wintab(cmd)
       endif
 
     elseif type == 'vsplit'
-      execute vim_cmd
+      if vim_cmd != ""
+        execute vim_cmd
+      else
+        call feedkeys("i" . get(s:keys, cmd), 'n')
+      endif
     endif
   endfor
 endfunction

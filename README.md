@@ -80,7 +80,7 @@ based on the configuration variables `g:wintab_boundary` and `WINTAB_BOUNDARY`:
   or fed to the program running in the container (in `tmux`).
 
 Internally, the `tmux` command `showenv [-g]` is used to read configuration variables in `tmux`.
-This means that these variables can changed on the fly from within `tmux`
+This means that these variables can be changed on the fly from within `tmux`
 using the `tmux` command `setenv [-g]`.
 Variables in the local environment (declared without the `-g` flag)
 take precedence over variables in the global environement.

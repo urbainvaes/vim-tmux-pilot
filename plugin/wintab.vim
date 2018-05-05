@@ -27,16 +27,12 @@ function! s:insert()
   augroup END
 endfunction
 
-let s:count = 0
 function! wintab#terminal(wincmd)
-  " ps -o state= -o comm= -t '#{pane_tty}' \
-  "     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'
-  let s:count =  s:count + 1
   augroup wintab
     autocmd!
     autocmd BufEnter <buffer> call s:insert()
   augroup END
-  call wintab#wintab(a:wincmd)
+  call wintab#wintab(a:wincmd, "terminal")
 endfunction
 
 function! wintab#on()
