@@ -20,7 +20,7 @@ and sourcing the appropriate file from `~/.tmux.conf`.
 
 In `~/.vimrc`, add:
 ```vim
-Plug 'urbainvaes/vim-wintab'
+Plug 'urbainvaes/vim-tmux-pilot'
 
 " Uncomment to enable navigation of vim tabs
 " let g:wintab_mode='wintab'
@@ -39,8 +39,8 @@ In `~/.tmux.conf`, add:
 # Uncomment to enable creation of tmux splits automatically
 # WINTAB_BOUNDARY=create
 
-WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
-source-file $WINTAB_ROOT/wintab.tmux.conf
+PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
+source-file $WINTAB_ROOT/wintab.tmux
 ```
 Note that the `$WINTAB_ROOT` environment variable needs to be defined for the plugin to work,
 and that it is important to use `$HOME` instead of tilde (`~`),
