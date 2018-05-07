@@ -85,14 +85,14 @@ function! s:vim_boundary(cmd, mode, boundary)
   return ""
 endfunction
 
-function! wintab#wintab(...)
+function! pilot#wintabcmd(...)
 
   let cmd = a:1
   let in_terminal = a:0 > 1 ? 1 : 0
 
-  let precedence = get(g:, 'wintab_precedence', s:default_precedence)
-  let mode = get(g:, 'wintab_mode', s:default_mode)
-  let boundary = get(g:, 'wintab_boundary', s:default_boundary)
+  let precedence = get(g:, 'pilot_precedence', s:default_precedence)
+  let mode = get(g:, 'pilot_mode', s:default_mode)
+  let boundary = get(g:, 'pilot_boundary', s:default_boundary)
   let s:tmux_cmd=""
 
   if precedence == 'vtab'
@@ -150,7 +150,7 @@ function! wintab#wintab(...)
     elseif type == 'vsplit'
       if vim_cmd != ""
         execute vim_cmd
-      else
+      elseif in_terminal
         call feedkeys("i" . get(s:keys, cmd), 'n')
       endif
     endif

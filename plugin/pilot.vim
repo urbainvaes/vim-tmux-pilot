@@ -22,37 +22,37 @@
 
 function! s:insert()
   norm a
-  augroup wintab
+  augroup pilot
     autocmd! BufEnter <buffer>
   augroup END
 endfunction
 
-function! wintab#terminal(wincmd)
-  augroup wintab
+function! pilot#terminal(wincmd)
+  augroup pilot
     autocmd!
     autocmd BufEnter <buffer> call s:insert()
   augroup END
-  call wintab#wintab(a:wincmd, "terminal")
+  call pilot#wintabcmd(a:wincmd, "terminal")
 endfunction
 
-function! wintab#on()
-  nnoremap <silent> <c-h> :call wintab#wintab('h')<cr>
-  nnoremap <silent> <c-j> :call wintab#wintab('j')<cr>
-  nnoremap <silent> <c-k> :call wintab#wintab('k')<cr>
-  nnoremap <silent> <c-l> :call wintab#wintab('l')<cr>
+function! pilot#on()
+  nnoremap <silent> <c-h> :call pilot#wintabcmd('h')<cr>
+  nnoremap <silent> <c-j> :call pilot#wintabcmd('j')<cr>
+  nnoremap <silent> <c-k> :call pilot#wintabcmd('k')<cr>
+  nnoremap <silent> <c-l> :call pilot#wintabcmd('l')<cr>
 
   if has("nvim")
-    tnoremap <silent> <c-h> <c-\><c-n>:call wintab#terminal('h')<cr>
-    tnoremap <silent> <c-j> <c-\><c-n>:call wintab#terminal('j')<cr>
-    tnoremap <silent> <c-k> <c-\><c-n>:call wintab#terminal('k')<cr>
-    tnoremap <silent> <c-l> <c-\><c-n>:call wintab#terminal('l')<cr>
+    tnoremap <silent> <c-h> <c-\><c-n>:call pilot#terminal('h')<cr>
+    tnoremap <silent> <c-j> <c-\><c-n>:call pilot#terminal('j')<cr>
+    tnoremap <silent> <c-k> <c-\><c-n>:call pilot#terminal('k')<cr>
+    tnoremap <silent> <c-l> <c-\><c-n>:call pilot#terminal('l')<cr>
   endif
 
   let s:on = 1
-  echom "Wintab status: on"
+  echom "vim-tmux-pilot status: on"
 endfunction
 
-function! wintab#off()
+function! pilot#off()
   nunmap <c-h>
   nunmap <c-l>
   nunmap <c-j>
@@ -66,16 +66,16 @@ function! wintab#off()
   endif
 
   let s:on = 0
-  echom "Wintab status: off"
+  echom "vim-tmux-pilot status: off"
 endfunction
 
-function! wintab#toggle()
-  call function(s:on ? "wintab#off" : "wintab#on")()
+function! pilot#toggle()
+  call function(s:on ? "pilot#off" : "pilot#on")()
 endfunction
 
-command! -nargs=0 WintabToggle call wintab#toggle()
-command! -nargs=1 Wintabcmd call wintab#wintab(<f-args>)
+command! -nargs=0 PilotToggle call pilot#toggle()
+command! -nargs=1 Pilotcmd call pilot#wintabcmd(<f-args>)
 
-silent call wintab#on()
+silent call pilot#on()
 
 " vim: sw=2

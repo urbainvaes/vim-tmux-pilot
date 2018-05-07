@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 function wintabcmd {
-    sh $WINTAB_ROOT/sh/tmux-wintabcmd $1
+    sh $PILOT_ROOT/sh/tmux-wintabcmd $1
 }
 
 function wintabcmd_h { wintabcmd h }

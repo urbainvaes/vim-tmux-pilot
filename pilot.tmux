@@ -20,22 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-TMUX_WINTABCMD=$WINTAB_ROOT/sh/tmux-wintabcmd
+TMUX_WINTABCMD=$PILOT_ROOT/sh/tmux-wintabcmd
 
-is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+is_vim_or_fzf="ps -o state= -o comm= -t '#{pane_tty}' \
     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'"
 
 is_shell="[ '$WINTAB_EXCLUDE_ZSH' == 1 ] \
           && ps -o tpgid= -o pid= -o comm= -t '#{pane_tty}' \
           | awk '$1 == $2 { print $3 }' | grep -ixq 'zsh'"
 
-bind -n C-h if-shell "$is_shell || $is_vim" "send-keys C-h" \
+bind -n C-h if-shell "$is_shell || $is_vim_or_fzf" "send-keys C-h" \
          "run-shell 'sh $TMUX_WINTABCMD h'"
-bind -n C-j if-shell "$is_shell || $is_vim" "send-keys C-j" \
+bind -n C-j if-shell "$is_shell || $is_vim_or_fzf" "send-keys C-j" \
          "run-shell 'sh $TMUX_WINTABCMD j'"
-bind -n C-k if-shell "$is_shell || $is_vim" "send-keys C-k" \
+bind -n C-k if-shell "$is_shell || $is_vim_or_fzf" "send-keys C-k" \
          "run-shell 'sh $TMUX_WINTABCMD k'"
-bind -n C-l if-shell "$is_shell || $is_vim" "send-keys C-l" \
+bind -n C-l if-shell "$is_shell || $is_vim_or_fzf" "send-keys C-l" \
          "run-shell 'sh $TMUX_WINTABCMD l'"
 
 bind-key -T copy-mode-vi C-h run-shell 'sh $TMUX_WINTABCMD h'

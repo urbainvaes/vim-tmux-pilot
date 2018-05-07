@@ -22,19 +22,18 @@
 #!/bin/sh
 
 # Read from global environment
-eval "$(tmux show-environment -gs WINTAB_BOUNDARY 2>/dev/null)"
-eval "$(tmux show-environment -gs WINTAB_MODE 2>/dev/null)"
+eval "$(tmux show-environment -gs PILOT_BOUNDARY 2>/dev/null)"
+eval "$(tmux show-environment -gs PILOT_MODE 2>/dev/null)"
 
 # Read from session environment
-eval "$(tmux show-environment -s WINTAB_BOUNDARY 2>/dev/null)"
-eval "$(tmux show-environment -s WINTAB_MODE 2>/dev/null)"
+eval "$(tmux show-environment -s PILOT_BOUNDARY 2>/dev/null)"
+eval "$(tmux show-environment -s PILOT_MODE 2>/dev/null)"
 
 # Default values
-BOUNDARY=${WINTAB_BOUNDARY:-ignore}
-MODE=${WINTAB_MODE:-winonly}
+BOUNDARY=${PILOT_BOUNDARY:-ignore}
+MODE=${PILOT_MODE:-winonly}
 
 function send {
-    echo "$1" "$2" >> ~/.wintab_log
     if [ "$2" = "dry" ]; then
         echo "$1"
     else

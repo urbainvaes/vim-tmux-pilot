@@ -23,10 +23,10 @@ In `~/.vimrc`, add:
 Plug 'urbainvaes/vim-tmux-pilot'
 
 " Uncomment to enable navigation of vim tabs
-" let g:wintab_mode='wintab'
+" let g:pilot_mode='wintab'
 
 " Uncomment to enable creation of vim splits automatically
-" let g:wintab_boundary='create'
+" let g:pilot_boundary='create'
 
 " A useful mapping to use with this plugin
 " nnoremap <nowait> <c-d> :q<cr>
@@ -34,36 +34,36 @@ Plug 'urbainvaes/vim-tmux-pilot'
 In `~/.tmux.conf`, add:
 ```tmux
 # Uncomment to enable navigation of tmux tabs
-# WINTAB_MODE=wintab
+# PILOT_MODE=wintab
 
 # Uncomment to enable creation of tmux splits automatically
-# WINTAB_BOUNDARY=create
+# PILOT_BOUNDARY=create
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
-source-file $WINTAB_ROOT/wintab.tmux
+source-file $PILOT_ROOT/pilot.tmux
 ```
-Note that the `$WINTAB_ROOT` environment variable needs to be defined for the plugin to work,
+Note that the `$PILOT_ROOT` environment variable needs to be defined for the plugin to work,
 and that it is important to use `$HOME` instead of tilde (`~`),
-because tilde expansion won't be performed on `WINTAB_ROOT`.
+because tilde expansion won't be performed on `PILOT_ROOT`.
 
 # Usage
 
 In the general case where `vim` is used inside a `tmux` session,
 the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
 
-| Config                | `g:wintab_mode = 'winonly'` | `g:wintab_mode = 'wintab'`    |
-| ------                | -------                     | -----------                   |
-| `WINTAB_MODE=winonly` | vsplit → tsplit             | vsplit → tsplit → vtab        |
-| `WINTAB_MODE=wintab`  | vsplit → tsplit → ttab      | vsplit → tsplit → vtab → ttab |
+| Config               | `g:pilot_mode = 'winonly'` | `g:pilot_mode = 'wintab'`     |
+| ------               | -------                    | -----------                   |
+| `PILOT_MODE=winonly` | vsplit → tsplit            | vsplit → tsplit → vtab        |
+| `PILOT_MODE=wintab`  | vsplit → tsplit → ttab     | vsplit → tsplit → vtab → ttab |
 
-The variable `g:wintab_precedence` can be set to `'vtab'` to give `vim` tabs a precedence higher than that of `tmux` splits.
-This ensures a slightly more consistent behaviour,
+The variable `g:pilot_precedence` can be set to `'vtab'` to give `vim` tabs a precedence higher than that of `tmux` splits.
+This ensures a s lightly more consistent behaviour,
 in the sense that `<c-l><c-h>` will always bring us back to where we started from.
 
 When trying to move across a bonudary of the navigation space,
 i.e. when there isn't any container to move to in the specified direction,
 the plugin will perform one of the following actions,
-based on the configuration variables `g:wintab_boundary` and `WINTAB_BOUNDARY`:
+based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
 
 - If the behaviour at the boundary is set to **create**,
   a container corresponding to the type of lowest precedence will be created.
@@ -86,31 +86,31 @@ Variables in the local environment (declared without the `-g` flag)
 take precedence over variables in the global environement.
 For example, in a shell:
 ```bash
-> # Set WINTAB_BOUNDARY to 'create' for this session
-> tmux setenv WINTAB_BOUNDARY create
+> # Set PILOT_BOUNDARY to 'create' for this session
+> tmux setenv PILOT_BOUNDARY create
 >
-> # Set WINTAB_BOUNDARY to 'reflect' for other sessions
-> tmux setenv -g WINTAB_BOUNDARY reflect
+> # Set PILOT_BOUNDARY to 'reflect' for other sessions
+> tmux setenv -g PILOT_BOUNDARY reflect
 ```
 
 # Customization
 
 In `vim`:
 
-| Config                | Default (other values)               | Description                          |
-| ------                | -------                              | -----------                          |
-| `g:wintab_mode`       | `'wintab'` (`'winonly`')             | Mode of operation                    |
-| `g:wintab_boundary`   | `'reflect'` (`'create'`, `'ignore'`) | Boundary condition                   |
-| `g:wintab_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
+| Config               | Default (other values)               | Description                          |
+| ------               | -------                              | -----------                          |
+| `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
+| `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
+| `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
 
 In `tmux`:
 
-| Config               | Default (other values)         | Description                           |
-| ------               | -------                        | -----------                           |
-| `WINTAB_MODE`        | `wintab` (`winonly`)           | Mode of operation                     |
-| `WINTAB_BOUNDARY`    | `reflect` (`create`, `ignore`) | Boundary condition                    |
-| `WINTAB_ROOT`        | Empty (must be set)            | Root directory of `vim-wintab`        |
-| `WINTAB_EXCLUDE_ZSH` | Empty (`1`)                    | Disable insert mode keybinding in zsh |
+| Config              | Default (other values)         | Description                           |
+| ------              | -------                        | -----------                           |
+| `PILOT_MODE`        | `winonly` (`wintab`)           | Mode of operation                     |
+| `PILOT_BOUNDARY`    | `ignore` (`create`, `reflect`) | Boundary condition                    |
+| `PILOT_ROOT`        | Empty (must be set)            | Root directory of `vim-tmux-pilot`    |
+| `PILOT_EXCLUDE_ZSH` | Empty (`1`)                    | Disable insert mode keybinding in zsh |
 
 # For zsh users
 
@@ -119,14 +119,14 @@ If you want the keybindings to be available only in normal mode,
 add the following to your `~./zshrc`,
 ```zsh
 if [ "$TMUX" != "" ]; then
-    source $WINTAB_ROOT/wintab.plugin.zsh
+    source $PILOT_ROOT/pilot.plugin.zsh
 fi
 ```
-and define `WINTAB_EXCLUDE_ZSH=1` in your `~/.tmux.conf`:
+and define `PILOT_EXCLUDE_ZSH=1` in your `~/.tmux.conf`:
 ```tmux
-WINTAB_EXCLUDE_ZSH=1
-WINTAB_ROOT=$HOME/.vim/plugged/vim-wintab
-source-file $WINTAB_ROOT/wintab.tmux.conf
+PILOT_EXCLUDE_ZSH=1
+PILOT_ROOT=$HOME/.vim/plugged/vim-wintab
+source-file $PILOT_ROOT/wintab.tmux.conf
 ```
 
 # License
