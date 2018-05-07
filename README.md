@@ -112,23 +112,6 @@ In `tmux`:
 | `PILOT_ROOT`        | Empty (must be set)            | Root directory of `vim-tmux-pilot`    |
 | `PILOT_EXCLUDE_ZSH` | Empty (`1`)                    | Disable insert mode keybinding in zsh |
 
-# For zsh users
-
-In `zsh`,
-If you want the keybindings to be available only in normal mode,
-add the following to your `~./zshrc`,
-```zsh
-if [ "$TMUX" != "" ]; then
-    source $PILOT_ROOT/pilot.plugin.zsh
-fi
-```
-and define `PILOT_EXCLUDE_ZSH=1` in your `~/.tmux.conf`:
-```tmux
-PILOT_EXCLUDE_ZSH=1
-PILOT_ROOT=$HOME/.vim/plugged/vim-wintab
-source-file $PILOT_ROOT/wintab.tmux.conf
-```
-
 # License
 
 MIT
