@@ -24,7 +24,7 @@ let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
 let s:path = expand('<sfile>:p:h')
-let s:keys = { "h": "\<c-h", "l": "\<c-l>", "j": "\<c-j>", "k": "\<c-k>" }
+let s:keys = { "h": "\<c-h>", "l": "\<c-l>", "j": "\<c-j>", "k": "\<c-k>" }
 
 function! s:get_tmux_cmd(cmd)
   if $TMUX == ""
@@ -155,6 +155,25 @@ function! pilot#wintabcmd(...)
       endif
     endif
   endfor
+endfunction
+
+function! s:insert()
+  norm a
+  augroup pilot
+    autocmd! BufEnter <buffer>
+  augroup END
+endfunction
+
+function! pilot#terminal(cmd)
+  if bufname('') =~ '/bin/fzf'
+    call feedkeys("i" . get(s:keys, a:cmd), 'n')
+    return
+  endif
+  augroup pilot
+    autocmd!
+    autocmd BufEnter <buffer> call s:insert()
+  augroup END
+  call pilot#wintabcmd(a:cmd, "terminal")
 endfunction
 
 " vim: sw=2

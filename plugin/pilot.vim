@@ -20,21 +20,6 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
-function! s:insert()
-  norm a
-  augroup pilot
-    autocmd! BufEnter <buffer>
-  augroup END
-endfunction
-
-function! pilot#terminal(wincmd)
-  augroup pilot
-    autocmd!
-    autocmd BufEnter <buffer> call s:insert()
-  augroup END
-  call pilot#wintabcmd(a:wincmd, "terminal")
-endfunction
-
 function! pilot#on()
   nnoremap <silent> <c-h> :call pilot#wintabcmd('h')<cr>
   nnoremap <silent> <c-j> :call pilot#wintabcmd('j')<cr>
