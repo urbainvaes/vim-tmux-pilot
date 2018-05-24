@@ -136,7 +136,7 @@ function! pilot#wintabcmd(...)
       endif
 
     elseif type == 'vtab'
-      if vim_cmd =~ "tab"
+      if vim_cmd =~ "\<tab"
         execute vim_cmd
         return
       endif
