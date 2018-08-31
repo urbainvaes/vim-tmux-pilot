@@ -21,9 +21,8 @@
 # THE SOFTWARE.
 
 TMUX_WINTABCMD=$PILOT_ROOT/sh/tmux-wintabcmd
-
 is_vim_or_fzf="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'"
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf|$PILOT_IGNORE)$'"
 
 bind -n C-h if-shell "$is_vim_or_fzf" "send-keys C-h" \
          "run-shell 'sh $TMUX_WINTABCMD h'"

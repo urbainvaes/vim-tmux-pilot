@@ -1,17 +1,9 @@
-# Vim-tmux-pilot (previously Vim-tmux-wintab)
+# Vim-tmux-pilot
 
 Inspired by [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator),
 this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` or `tmux` tabs when no `vim` or `tmux` split is available,
 similarly to what happens in the [i3](https://i3wm.org) window manager in a workspace with both tabs and splits.
 It can additionally be configured to automatically create a container when reaching the boundary of the navigation space.
-
-# Terminology
-
-To avoid ambiguities,
-we use the simplified terminology {`vim`,`tmux`}-{splits,tabs} and
-the abbreviations {v,t}{splits,tabs}
-to refer to {`vim`-{windows,tabs},`tmux`-{panes,windows}}, respectively.
-The term "navigation space" is used to refer to the set of containers that can be accessed via the keys `c-{h,j,k,l}`.
 
 # Installation
 
@@ -43,10 +35,17 @@ PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
 ```
 Note that the `$PILOT_ROOT` environment variable needs to be defined for the plugin to work,
-and that it is important to use `$HOME` instead of tilde (`~`),
-because tilde expansion won't be performed on `PILOT_ROOT`.
+and that it is important to use `$HOME` and not the tilde (`~`),
+as tilde expansion won't be performed on `PILOT_ROOT`.
 
 # Usage
+
+To avoid ambiguities,
+we use the simplified terminology {`vim`,`tmux`}-{splits,tabs} and
+the abbreviations {v,t}{splits,tabs}
+to refer to {`vim`-{windows,tabs},`tmux`-{panes,windows}}, respectively.
+The term "navigation space" is used to refer to the set of containers that can be accessed via the keys `c-{h,j,k,l}`;
+see below for details.
 
 In the general case where `vim` is used inside a `tmux` session,
 the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as follows:
@@ -67,21 +66,20 @@ based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
 
 - If the behaviour at the boundary is set to **create**,
   a container corresponding to the type of lowest precedence will be created.
-  That way, the behaviour is consistent between containers.
+  This way, the behaviour is consistent between containers.
 
 - If the behaviour at the boundary is set to **reflect**,
   the focus will move to the opposite container of lowest precedence.
   In case there isn't one,
-  containers of lower precedence will be used,
+  containers of higher precedence will be used,
   or the key will be sent to the program is none is available.
 
 - If the behaviour at the boundary is set to **ignore**,
   the key is simply ignored (in `vim`)
   or fed to the program running in the container (in `tmux`).
 
-Internally, the `tmux` command `showenv [-g]` is used to read configuration variables in `tmux`.
-This means that these variables can be changed on the fly from within `tmux`
-using the `tmux` command `setenv [-g]`.
+Internally, the `tmux` command `showenv [-g]` is used to read configuration variables.
+This means that these variables can be changed on the fly from within `tmux` using the command `setenv [-g]`.
 Variables in the local environment (declared without the `-g` flag)
 take precedence over variables in the global environement.
 For example, in a shell:
@@ -110,7 +108,7 @@ In `tmux`:
 | `PILOT_MODE`        | `winonly` (`wintab`)           | Mode of operation                     |
 | `PILOT_BOUNDARY`    | `ignore` (`create`, `reflect`) | Boundary condition                    |
 | `PILOT_ROOT`        | Empty (must be set)            | Root directory of `vim-tmux-pilot`    |
-| `PILOT_EXCLUDE_ZSH` | Empty (`1`)                    | Disable insert mode keybinding in zsh |
+| `PILOT_IGNORE`      | Empty                          | Applications to ignore                |
 
 # License
 
