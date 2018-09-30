@@ -19,9 +19,6 @@ Plug 'urbainvaes/vim-tmux-pilot'
 
 " Uncomment to enable creation of vim splits automatically
 " let g:pilot_boundary='create'
-
-" A useful mapping to use with this plugin
-" nnoremap <nowait> <c-d> :q<cr>
 ```
 In `~/.tmux.conf`, add:
 ```tmux
@@ -56,30 +53,31 @@ the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as
 | `PILOT_MODE=wintab`  | vsplit → tsplit → ttab     | vsplit → tsplit → vtab → ttab |
 
 The variable `g:pilot_precedence` can be set to `'vtab'` to give `vim` tabs a precedence higher than that of `tmux` splits.
-This ensures a s lightly more consistent behaviour,
+This ensures a slightly more consistent behaviour,
 in the sense that `<c-l><c-h>` will always bring us back to where we started from.
 
-When trying to move across a bonudary of the navigation space,
+When trying to move across a boundary of the navigation space,
 i.e. when there isn't any container to move to in the specified direction,
 the plugin will perform one of the following actions,
 based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
 
 - If the behaviour at the boundary is set to **create**,
   a container corresponding to the type of lowest precedence will be created.
-  This way, the behaviour is consistent between containers.
+  This way, the behaviour is consistent between containers 
+  (i.e. containers that are at the boundary of the navigation space do not receive more features for it).
 
 - If the behaviour at the boundary is set to **reflect**,
   the focus will move to the opposite container of lowest precedence.
-  In case there isn't one,
+  If there isn't one,
   containers of higher precedence will be used,
-  or the key will be sent to the program is none is available.
+  or the key will be sent to the program if none is available.
 
 - If the behaviour at the boundary is set to **ignore**,
   the key is simply ignored (in `vim`)
   or fed to the program running in the container (in `tmux`).
 
-Internally, the `tmux` command `showenv [-g]` is used to read configuration variables.
-This means that these variables can be changed on the fly from within `tmux` using the command `setenv [-g]`.
+Internally, the `tmux` command `showenv [-g]` is used to read configuration variables,
+so these variables can be changed on the fly from within `tmux` using the command `setenv [-g]`.
 Variables in the local environment (declared without the `-g` flag)
 take precedence over variables in the global environement.
 For example, in a shell:
