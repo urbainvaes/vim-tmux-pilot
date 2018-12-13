@@ -20,7 +20,7 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
-function! pilot#on()
+function! Pilot_on()
   nnoremap <silent> <c-h> :call pilot#wintabcmd('h')<cr>
   nnoremap <silent> <c-j> :call pilot#wintabcmd('j')<cr>
   nnoremap <silent> <c-k> :call pilot#wintabcmd('k')<cr>
@@ -37,7 +37,7 @@ function! pilot#on()
   echom "vim-tmux-pilot status: on"
 endfunction
 
-function! pilot#off()
+function! Pilot_off()
   nunmap <c-h>
   nunmap <c-l>
   nunmap <c-j>
@@ -54,13 +54,13 @@ function! pilot#off()
   echom "vim-tmux-pilot status: off"
 endfunction
 
-function! pilot#toggle()
-  call function(s:on ? "pilot#off" : "pilot#on")()
+function! Pilot_toggle()
+  call function(s:on ? "Pilot_off" : "Pilot_on")()
 endfunction
 
-command! -nargs=0 PilotToggle call pilot#toggle()
+command! -nargs=0 PilotToggle call Pilot_toggle()
 command! -nargs=1 Pilotcmd call pilot#wintabcmd(<f-args>)
 
-silent call pilot#on()
+silent call Pilot_on()
 
 " vim: sw=2
