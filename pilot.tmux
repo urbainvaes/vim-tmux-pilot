@@ -42,9 +42,9 @@ bind-key -T copy-mode-vi C-l run-shell 'sh $TMUX_WINTABCMD l'
 bind-key F11 run-shell 'sh $TMUX_WINTABCMD toggle-pause'
 
 # Re-add default functionality
-bind C-h send-keys C-h
-bind C-j send-keys C-j
-bind C-k send-keys C-k
-bind C-l send-keys C-l
+# bind C-h send-keys C-h
+# bind C-j send-keys C-j
+# bind C-k send-keys C-k
+# bind C-l send-keys C-l
 
 # vim: ft=tmux
