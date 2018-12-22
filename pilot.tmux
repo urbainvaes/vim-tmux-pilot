@@ -38,4 +38,7 @@ bind-key -T copy-mode-vi C-j run-shell 'sh $TMUX_WINTABCMD j'
 bind-key -T copy-mode-vi C-k run-shell 'sh $TMUX_WINTABCMD k'
 bind-key -T copy-mode-vi C-l run-shell 'sh $TMUX_WINTABCMD l'
 
+# Pause the plugin
+bind-key F11 run-shell 'sh $TMUX_WINTABCMD toggle-pause'
+
 # vim: ft=tmux

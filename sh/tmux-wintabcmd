@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # The MIT License (MIT)
 #
@@ -25,16 +25,25 @@
 # Read from global environment
 eval "$(tmux show-environment -gs PILOT_BOUNDARY 2>/dev/null)"
 eval "$(tmux show-environment -gs PILOT_MODE 2>/dev/null)"
+eval "$(tmux show-environment -gs PILOT_PAUSE 2>/dev/null)"
 
 # Read from session environment
 eval "$(tmux show-environment -s PILOT_BOUNDARY 2>/dev/null)"
 eval "$(tmux show-environment -s PILOT_MODE 2>/dev/null)"
+eval "$(tmux show-environment -s PILOT_PAUSE 2>/dev/null)"
 
 # Default values
 BOUNDARY=${PILOT_BOUNDARY:-ignore}
 MODE=${PILOT_MODE:-winonly}
+PAUSE=${PILOT_PAUSE:-0}
 
-function send {
+# Toggle pause
+if [ "$1" = "toggle-pause" ]; then
+    tmux setenv PILOT_PAUSE $(((1 - PAUSE)))
+    exit 0
+fi
+
+send() {
     if [ "$2" = "dry" ]; then
         echo "$1"
     else
@@ -46,6 +55,10 @@ function send {
 
 key=$1
 dryrun=$2
+
+if [ "$PAUSE" = 1 ]; then
+    send "tmux send-keys C-$key" "$dryrun"
+fi
 
 # select-pane
 case "$key" in
