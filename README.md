@@ -30,6 +30,9 @@ In `~/.tmux.conf`, add:
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
+
+# Add binding 'prefix C-l' to send 'C-l' to underlying program
+bind C-l send-keys C-l
 ```
 Note that the `$PILOT_ROOT` environment variable needs to be defined for the plugin to work,
 and that it is important to use `$HOME` and not the tilde (`~`),
@@ -63,7 +66,7 @@ based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
 
 - If the behaviour at the boundary is set to **create**,
   a container corresponding to the type of lowest precedence will be created.
-  This way, the behaviour is consistent between containers 
+  This way, the behaviour is consistent between containers
   (i.e. containers that are at the boundary of the navigation space do not receive more features for it).
 
 - If the behaviour at the boundary is set to **reflect**,
