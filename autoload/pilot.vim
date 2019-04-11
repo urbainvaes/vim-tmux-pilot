@@ -32,7 +32,7 @@ function! s:get_tmux_cmd(cmd)
   elseif s:tmux_cmd == ""
     let argument = a:cmd . " dry"
     let script = s:path . "/../sh/tmux-wintabcmd"
-    let s:tmux_cmd = system('sh '.script." ".a:cmd." dry")
+    let s:tmux_cmd = system('sh "'.script.'" '.a:cmd.' dry')
   endif
   return s:tmux_cmd
 endfunction
