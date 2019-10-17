@@ -46,7 +46,7 @@ KEY_L=$PILOT_KEY_L
 
 TMUX_WINTABCMD=$PILOT_ROOT/sh/tmux-wintabcmd
 IS_VIM_OR_FZF="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf|$PILOT_IGNORE)$'"
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf)$'"
 
 bind -n $KEY_H if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_H" \
          "run-shell 'sh $TMUX_WINTABCMD h'"
