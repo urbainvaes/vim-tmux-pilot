@@ -169,7 +169,7 @@ function! pilot#wintabcmd(...)
 endfunction
 
 function! s:insert()
-  norm a
+  call feedkeys('a', 'n')
   augroup pilot
     autocmd! BufEnter <buffer>
   augroup END
