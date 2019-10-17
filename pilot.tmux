@@ -20,31 +20,55 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+%if #{==:#{PILOT_KEY_H},}
+KEY_H=C-h
+%else
+KEY_H=$PILOT_KEY_H
+%endif
+
+%if #{==:#{PILOT_KEY_J},}
+KEY_J=C-j
+%else
+KEY_J=$PILOT_KEY_J
+%endif
+
+%if #{==:#{PILOT_KEY_K},}
+KEY_K=C-k
+%else
+KEY_K=$PILOT_KEY_K
+%endif
+
+%if #{==:#{PILOT_KEY_L},}
+KEY_L=C-l
+%else
+KEY_L=$PILOT_KEY_L
+%endif
+
 TMUX_WINTABCMD=$PILOT_ROOT/sh/tmux-wintabcmd
-is_vim_or_fzf="ps -o state= -o comm= -t '#{pane_tty}' \
+IS_VIM_OR_FZF="ps -o state= -o comm= -t '#{pane_tty}' \
     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(g?(view|n?vim?x?)(diff)?|fzf|$PILOT_IGNORE)$'"
 
-bind -n C-h if-shell "$is_vim_or_fzf" "send-keys C-h" \
+bind -n $KEY_H if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_H" \
          "run-shell 'sh $TMUX_WINTABCMD h'"
-bind -n C-j if-shell "$is_vim_or_fzf" "send-keys C-j" \
+bind -n $KEY_J if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_J" \
          "run-shell 'sh $TMUX_WINTABCMD j'"
-bind -n C-k if-shell "$is_vim_or_fzf" "send-keys C-k" \
+bind -n $KEY_K if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_K" \
          "run-shell 'sh $TMUX_WINTABCMD k'"
-bind -n C-l if-shell "$is_vim_or_fzf" "send-keys C-l" \
+bind -n $KEY_L if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_L" \
          "run-shell 'sh $TMUX_WINTABCMD l'"
 
-bind-key -T copy-mode-vi C-h run-shell 'sh $TMUX_WINTABCMD h'
-bind-key -T copy-mode-vi C-j run-shell 'sh $TMUX_WINTABCMD j'
-bind-key -T copy-mode-vi C-k run-shell 'sh $TMUX_WINTABCMD k'
-bind-key -T copy-mode-vi C-l run-shell 'sh $TMUX_WINTABCMD l'
+bind-key -T copy-mode-vi $KEY_H run-shell 'sh $TMUX_WINTABCMD h'
+bind-key -T copy-mode-vi $KEY_J run-shell 'sh $TMUX_WINTABCMD j'
+bind-key -T copy-mode-vi $KEY_K run-shell 'sh $TMUX_WINTABCMD k'
+bind-key -T copy-mode-vi $KEY_L run-shell 'sh $TMUX_WINTABCMD l'
 
 # Pause the plugin
 bind-key F11 run-shell 'sh $TMUX_WINTABCMD toggle-pause'
 
 # Re-add default functionality
-# bind C-h send-keys C-h
-# bind C-j send-keys C-j
-# bind C-k send-keys C-k
-# bind C-l send-keys C-l
+# bind $KEY_H send-keys C-h
+# bind $KEY_J send-keys C-j
+# bind $KEY_K send-keys C-k
+# bind $KEY_L send-keys C-l
 
 # vim: ft=tmux

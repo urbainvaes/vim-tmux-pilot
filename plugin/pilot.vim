@@ -20,17 +20,27 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
+let s:default_keys = {
+      \ "h": "<c-h>",
+      \ "j": "<c-j>",
+      \ "k": "<c-k>",
+      \ "l": "<c-l>"}
+
+function! s:get_key(key)
+  return get(g:, "pilot_key_".a:key, s:default_keys[a:key])
+endfunction
+
 function! Pilot_on()
-  nnoremap <silent> <c-h> :call pilot#wintabcmd('h')<cr>
-  nnoremap <silent> <c-j> :call pilot#wintabcmd('j')<cr>
-  nnoremap <silent> <c-k> :call pilot#wintabcmd('k')<cr>
-  nnoremap <silent> <c-l> :call pilot#wintabcmd('l')<cr>
+  exe "nnoremap <silent>" s:get_key('h') ":call pilot#wintabcmd('h')\<cr>"
+  exe "nnoremap <silent>" s:get_key('j') ":call pilot#wintabcmd('j')\<cr>"
+  exe "nnoremap <silent>" s:get_key('k') ":call pilot#wintabcmd('k')\<cr>"
+  exe "nnoremap <silent>" s:get_key('l') ":call pilot#wintabcmd('l')\<cr>"
 
   if has("nvim")
-    tnoremap <silent> <c-h> <c-\><c-n>:call pilot#terminal('h')<cr>
-    tnoremap <silent> <c-j> <c-\><c-n>:call pilot#terminal('j')<cr>
-    tnoremap <silent> <c-k> <c-\><c-n>:call pilot#terminal('k')<cr>
-    tnoremap <silent> <c-l> <c-\><c-n>:call pilot#terminal('l')<cr>
+    exe "tnoremap <silent>" s:get_key('h') "\<c-\>\<c-n>:call pilot#terminal('h')\<cr>"
+    exe "tnoremap <silent>" s:get_key('j') "\<c-\>\<c-n>:call pilot#terminal('j')\<cr>"
+    exe "tnoremap <silent>" s:get_key('k') "\<c-\>\<c-n>:call pilot#terminal('k')\<cr>"
+    exe "tnoremap <silent>" s:get_key('l') "\<c-\>\<c-n>:call pilot#terminal('l')\<cr>"
   endif
 
   let s:on = 1
@@ -38,16 +48,16 @@ function! Pilot_on()
 endfunction
 
 function! Pilot_off()
-  nunmap <c-h>
-  nunmap <c-l>
-  nunmap <c-j>
-  nunmap <c-k>
+  exe "nunmap" s:get_key('h')
+  exe "nunmap" s:get_key('j')
+  exe "nunmap" s:get_key('k')
+  exe "nunmap" s:get_key('l')
 
   if has("nvim")
-    tunmap <silent> <c-h>
-    tunmap <silent> <c-j>
-    tunmap <silent> <c-k>
-    tunmap <silent> <c-l>
+    exe "tunmap <silent>" s:get_key('h')
+    exe "tunmap <silent>" s:get_key('j')
+    exe "tunmap <silent>" s:get_key('k')
+    exe "tunmap <silent>" s:get_key('l')
   endif
 
   let s:on = 0

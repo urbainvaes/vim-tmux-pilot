@@ -24,7 +24,16 @@ let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
 let s:path = expand('<sfile>:p:h')
-let s:keys = { "h": "\<c-h>", "l": "\<c-l>", "j": "\<c-j>", "k": "\<c-k>" }
+
+let s:default_keys = {
+      \ "h": "<c-h>",
+      \ "j": "<c-j>",
+      \ "k": "<c-k>",
+      \ "l": "<c-l>"}
+
+function! s:get_key(key)
+  return get(g:, "pilot_key_".a:key, s:default_keys[a:key])
+endfunction
 
 function! s:get_tmux_cmd(cmd)
   if $TMUX == ""
@@ -151,7 +160,9 @@ function! pilot#wintabcmd(...)
       if vim_cmd != ""
         execute vim_cmd
       elseif in_terminal
-        call feedkeys("i" . get(s:keys, cmd), 'n')
+        " Hack from [1]
+        let litteral_cmd = eval('"'.escape(s:get_key(cmd), '<').'"')
+        call feedkeys("i" . litteral_cmd, 'n')
       endif
     endif
   endfor
@@ -166,7 +177,10 @@ endfunction
 
 function! pilot#terminal(cmd)
   if bufname('') =~ '/bin/fzf'
-    call feedkeys("i" . get(s:keys, a:cmd), 'n')
+    " Hack from [1]
+    let litteral_cmd = eval('"'.escape(s:get_key(a:cmd), '\<').'"')
+    echom litteral_cmd
+    call feedkeys("i" . litteral_cmd, 'n')
     return
   endif
   augroup pilot
@@ -176,4 +190,5 @@ function! pilot#terminal(cmd)
   call pilot#wintabcmd(a:cmd, "terminal")
 endfunction
 
+" [1]:  https://vi.stackexchange.com/questions/16153/get-literal-character-from-printable-character
 " vim: sw=2
