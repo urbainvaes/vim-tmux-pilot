@@ -19,6 +19,12 @@ Plug 'urbainvaes/vim-tmux-pilot'
 
 " Uncomment to enable creation of vim splits automatically
 " let g:pilot_boundary='create'
+
+" Uncomment to use the modifier `Alt` instead of `Control`
+" let g:pilot_key_h='<a-h>'
+" let g:pilot_key_j='<a-j>'
+" let g:pilot_key_k='<a-k>'
+" let g:pilot_key_l='<a-l>'
 ```
 In `~/.tmux.conf`, add:
 ```tmux
@@ -27,6 +33,12 @@ In `~/.tmux.conf`, add:
 
 # Uncomment to enable creation of tmux splits automatically
 # PILOT_BOUNDARY=create
+
+# Uncomment to use the modifier `Alt` instead of `Control`
+# PILOT_KEY_H=M-h
+# PILOT_KEY_J=M-j
+# PILOT_KEY_K=M-k
+# PILOT_KEY_L=M-l
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
@@ -101,23 +113,15 @@ In `vim`:
 | `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
 | `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
 | `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
-| `g:pilot_key_h`      | `<c-h>`                              | Default keybinding to move left      |
-| `g:pilot_key_j`      | `<c-j>`                              | Default keybinding to move down      |
-| `g:pilot_key_k`      | `<c-k>`                              | Default keybinding to move up        |
-| `g:pilot_key_l`      | `<c-l>`                              | Default keybinding to move right     |
 
 In `tmux`:
 
-| Config           | Default (other values)         | Description                        |
-| ------           | -------                        | -----------                        |
-| `PILOT_MODE`     | `winonly` (`wintab`)           | Mode of operation                  |
-| `PILOT_BOUNDARY` | `ignore` (`create`, `reflect`) | Boundary condition                 |
-| `PILOT_ROOT`     | Empty (must be set)            | Root directory of `vim-tmux-pilot` |
-| `PILOT_IGNORE`   | Empty                          | Applications to ignore             |
-| `PILOT_KEY_H`    | `C-h`                          | Default keybinding to move left    |
-| `PILOT_KEY_J`    | `C-j`                          | Default keybinding to move down    |
-| `PILOT_KEY_K`    | `C-k`                          | Default keybinding to move up      |
-| `PILOT_KEY_L`    | `C-l`                          | Default keybinding to move right   |
+| Config              | Default (other values)         | Description                           |
+| ------              | -------                        | -----------                           |
+| `PILOT_MODE`        | `winonly` (`wintab`)           | Mode of operation                     |
+| `PILOT_BOUNDARY`    | `ignore` (`create`, `reflect`) | Boundary condition                    |
+| `PILOT_ROOT`        | Empty (must be set)            | Root directory of `vim-tmux-pilot`    |
+| `PILOT_IGNORE`      | Empty                          | Applications to ignore                |
 
 # License
 
