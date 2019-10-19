@@ -21,10 +21,11 @@
 " THE SOFTWARE.
 
 let s:default_keys = {
-      \ "h": "<c-h>",
-      \ "j": "<c-j>",
-      \ "k": "<c-k>",
-      \ "l": "<c-l>"}
+      \ "h": '<c-h>',
+      \ "j": '<c-j>',
+      \ "k": '<c-k>',
+      \ "l": '<c-l>',
+      \ "p": '<c-\>'}
 
 function! s:get_key(key)
   return get(g:, "pilot_key_".a:key, s:default_keys[a:key])
@@ -35,12 +36,14 @@ function! Pilot_on()
   exe "nnoremap <silent>" s:get_key('j') ":call pilot#wintabcmd('j')\<cr>"
   exe "nnoremap <silent>" s:get_key('k') ":call pilot#wintabcmd('k')\<cr>"
   exe "nnoremap <silent>" s:get_key('l') ":call pilot#wintabcmd('l')\<cr>"
+  exe "nnoremap <silent>" s:get_key('p') ":call pilot#wintabcmd('p')\<cr>"
 
   if has("nvim")
     exe "tnoremap <silent>" s:get_key('h') "\<c-\>\<c-n>:call pilot#terminal('h')\<cr>"
     exe "tnoremap <silent>" s:get_key('j') "\<c-\>\<c-n>:call pilot#terminal('j')\<cr>"
     exe "tnoremap <silent>" s:get_key('k') "\<c-\>\<c-n>:call pilot#terminal('k')\<cr>"
     exe "tnoremap <silent>" s:get_key('l') "\<c-\>\<c-n>:call pilot#terminal('l')\<cr>"
+    exe "tnoremap <silent>" s:get_key('p') "\<c-\>\<c-n>:call pilot#terminal('p')\<cr>"
   endif
 
   let s:on = 1
@@ -52,12 +55,14 @@ function! Pilot_off()
   exe "nunmap" s:get_key('j')
   exe "nunmap" s:get_key('k')
   exe "nunmap" s:get_key('l')
+  exe "nunmap" s:get_key('p')
 
   if has("nvim")
     exe "tunmap <silent>" s:get_key('h')
     exe "tunmap <silent>" s:get_key('j')
     exe "tunmap <silent>" s:get_key('k')
     exe "tunmap <silent>" s:get_key('l')
+    exe "tunmap <silent>" s:get_key('p')
   endif
 
   let s:on = 0

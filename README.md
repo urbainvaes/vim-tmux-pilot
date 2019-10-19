@@ -25,6 +25,7 @@ Plug 'urbainvaes/vim-tmux-pilot'
 " let g:pilot_key_j='<a-j>'
 " let g:pilot_key_k='<a-k>'
 " let g:pilot_key_l='<a-l>'
+" let g:pilot_key_l='<a-\>'
 ```
 In `~/.tmux.conf`, add:
 ```tmux
@@ -39,6 +40,7 @@ In `~/.tmux.conf`, add:
 # PILOT_KEY_J=M-j
 # PILOT_KEY_K=M-k
 # PILOT_KEY_L=M-l
+# PILOT_KEY_L=M-backslash
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
@@ -113,10 +115,11 @@ In `vim`:
 | `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
 | `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
 | `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
-| `g:pilot_key_h`      | `<c-h>`                              | Default keybinding to move left      |
-| `g:pilot_key_j`      | `<c-j>`                              | Default keybinding to move down      |
-| `g:pilot_key_k`      | `<c-k>`                              | Default keybinding to move up        |
-| `g:pilot_key_l`      | `<c-l>`                              | Default keybinding to move right     |
+| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left              |
+| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down              |
+| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up                |
+| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right             |
+| `g:pilot_key_p`      | `'<c-\>'`                           | Keybinding to to previous split |
 
 In `tmux`:
 
@@ -126,10 +129,15 @@ In `tmux`:
 | `PILOT_BOUNDARY` | `ignore` (`create`, `reflect`) | Boundary condition                 |
 | `PILOT_ROOT`     | Empty (must be set)            | Root directory of `vim-tmux-pilot` |
 | `PILOT_IGNORE`   | Empty                          | Applications to ignore             |
-| `PILOT_KEY_H`    | `C-h`                          | Default keybinding to move left    |
-| `PILOT_KEY_J`    | `C-j`                          | Default keybinding to move down    |
-| `PILOT_KEY_K`    | `C-k`                          | Default keybinding to move up      |
-| `PILOT_KEY_L`    | `C-l`                          | Default keybinding to move right   |
+| `PILOT_KEY_H`    | `C-h`                          | Keybinding to left                 |
+| `PILOT_KEY_J`    | `C-j`                          | Keybinding to down                 |
+| `PILOT_KEY_K`    | `C-k`                          | Keybinding to up                   |
+| `PILOT_KEY_L`    | `C-l`                          | Keybinding to right                |
+| `PILOT_KEY_P`    | `C-backslash`                  | Keybinding to previous split       |
+
+The keybindings defined in `vim` and `tmux` must coincide for the plugin to work.
+In addition, because of a limitation of `tmux`,
+changing the keybinding `PILOT_KEY_P` to `M-\` requires to use the spelling `M-backslash`.
 
 # License
 

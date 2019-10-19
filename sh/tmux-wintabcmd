@@ -60,6 +60,17 @@ if [ "$PAUSE" = 1 ]; then
     send "tmux send-keys C-$key" "$dryrun"
 fi
 
+if [ "$key" = 'p' ]; then
+    n_panes=$(tmux display-message -p "#{window_panes}")
+    pane_zoomed=$(tmux display-message -p "#{window_zoomed_flag}")
+    if [ "$n_panes" = 1 ] || [ "$pane_zoomed" = 1 ]; then
+        echo "do_nothing"
+        exit 0
+    else
+        send "tmux select-pane -l" "$dryrun"
+    fi
+fi
+
 # select-pane
 case "$key" in
     "h" ) direction=left;   pane_cmd=L ;;

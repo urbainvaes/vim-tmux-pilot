@@ -24,12 +24,14 @@ let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
 let s:path = expand('<sfile>:p:h')
+let s:last_split_is_tmux = 0
 
 let s:default_keys = {
-      \ "h": "<c-h>",
-      \ "j": "<c-j>",
-      \ "k": "<c-k>",
-      \ "l": "<c-l>"}
+      \ "h": '<c-h>',
+      \ "j": '<c-j>',
+      \ "k": '<c-k>',
+      \ "l": '<c-l>',
+      \ "p": '<c-\>'}
 
 function! s:get_key(key)
   return get(g:, "pilot_key_".a:key, s:default_keys[a:key])
@@ -96,13 +98,34 @@ endfunction
 
 function! pilot#wintabcmd(...)
 
+  echom s:last_split_is_tmux
   let cmd = a:1
   let in_terminal = a:0 > 1 ? 1 : 0
+  let s:tmux_cmd=""
+
+  if cmd == 'p'
+    let order = s:last_split_is_tmux ?
+          \  ['tsplit', 'vsplit'] : ['vsplit', 'tsplit']
+    for type in order
+      if type == 'vsplit'
+        let winnum = winnr()
+        execute 'wincmd' cmd
+        if winnum != winnr()
+          let s:last_split_is_tmux = 0
+          return
+        endif
+      elseif type == 'tsplit' && s:get_tmux_cmd(cmd) =~ "select-pane"
+        call system(s:tmux_cmd)
+        let s:last_split_is_tmux = 1
+        return
+      endif
+    endfor
+    return
+  endif
 
   let precedence = get(g:, 'pilot_precedence', s:default_precedence)
   let mode = get(g:, 'pilot_mode', s:default_mode)
   let boundary = get(g:, 'pilot_boundary', s:default_boundary)
-  let s:tmux_cmd=""
 
   if precedence == 'vtab'
     let order = ['vsplit', 'vtab', 'tsplit', 'ttab']
@@ -116,11 +139,14 @@ function! pilot#wintabcmd(...)
       let winnum = winnr()
       execute 'wincmd' cmd
       if winnum != winnr()
+        let s:last_split_is_tmux = 0
         return
       endif
 
     elseif type == 'tsplit' && s:get_tmux_cmd(cmd) =~ "select-pane"
-      call system(s:tmux_cmd) | return
+      call system(s:tmux_cmd)
+      let s:last_split_is_tmux = 1
+      return
 
     elseif mode == 'wintab' && type == 'vtab'
       if tabpagenr() > 1 && cmd == 'h'
@@ -153,12 +179,14 @@ function! pilot#wintabcmd(...)
     elseif type == 'tsplit'
       if s:tmux_cmd != "" && s:tmux_cmd !~ "send-keys"
         call system(s:tmux_cmd)
+        let s:last_split_is_tmux = 1
         return
       endif
 
     elseif type == 'vsplit'
       if vim_cmd != ""
         execute vim_cmd
+        let s:last_split_is_tmux = 0
       elseif in_terminal
         " Hack from [1]
         let litteral_cmd = eval('"'.escape(s:get_key(cmd), '<').'"')

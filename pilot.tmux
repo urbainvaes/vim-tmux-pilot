@@ -75,7 +75,6 @@ KEY_P=C-backslash
 KEY_P=$PILOT_KEY_P
 %endif
 
-display-message $KEY_P
 %if #{==:#{KEY_P},C-backslash}
 bind -n C-\ if-shell "$IS_VIM_OR_FZF" "send-keys C-\\" "select-pane -l"
 bind-key -T copy-mode-vi C-\ select-pane -l
