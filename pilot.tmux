@@ -67,6 +67,28 @@ bind-key -T copy-mode-vi $KEY_J run-shell 'sh $TMUX_WINTABCMD j'
 bind-key -T copy-mode-vi $KEY_K run-shell 'sh $TMUX_WINTABCMD k'
 bind-key -T copy-mode-vi $KEY_L run-shell 'sh $TMUX_WINTABCMD l'
 
+# ---  MOVEMENT 'P' ---  #
+# This requires non-elegant hack because of '\'
+%if #{==:#{PILOT_KEY_P},}
+KEY_P=C-backslash
+%else
+KEY_P=$PILOT_KEY_P
+%endif
+
+display-message $KEY_P
+%if #{==:#{KEY_P},C-backslash}
+bind -n C-\ if-shell "$IS_VIM_OR_FZF" "send-keys C-\\" "select-pane -l"
+bind-key -T copy-mode-vi C-\ select-pane -l
+%elif #{==:#{KEY_P},M-backslash}
+bind -n M-\ if-shell "$IS_VIM_OR_FZF" "send-keys M-\\" "select-pane -l"
+bind-key -T copy-mode-vi M-\ select-pane -l
+%else
+bind -n $KEY_P if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_P" "select-pane -l"
+bind-key -T copy-mode-vi $KEY_P select-pane -l
+%endif
+# ---------------------  #
+
+
 # Pause the plugin
 bind-key F11 run-shell 'sh $TMUX_WINTABCMD toggle-pause'
 
