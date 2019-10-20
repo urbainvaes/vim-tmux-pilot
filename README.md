@@ -25,7 +25,7 @@ Plug 'urbainvaes/vim-tmux-pilot'
 " let g:pilot_key_j='<a-j>'
 " let g:pilot_key_k='<a-k>'
 " let g:pilot_key_l='<a-l>'
-" let g:pilot_key_l='<a-\>'
+" let g:pilot_key_p='<a-\>'
 ```
 In `~/.tmux.conf`, add:
 ```tmux
@@ -40,7 +40,7 @@ In `~/.tmux.conf`, add:
 # PILOT_KEY_J=M-j
 # PILOT_KEY_K=M-k
 # PILOT_KEY_L=M-l
-# PILOT_KEY_L=M-backslash
+# PILOT_KEY_P=M-backslash
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
@@ -115,11 +115,11 @@ In `vim`:
 | `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
 | `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
 | `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
-| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left              |
-| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down              |
-| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up                |
-| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right             |
-| `g:pilot_key_p`      | `'<c-\>'`                           | Keybinding to to previous split |
+| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left                   |
+| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down                   |
+| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up                     |
+| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right                  |
+| `g:pilot_key_p`      | `'<c-\>'`                            | Keybinding to to previous split      |
 
 In `tmux`:
 
