@@ -36,11 +36,11 @@ In `~/.tmux.conf`, add:
 # PILOT_BOUNDARY=create
 
 # Uncomment to use the modifier `Alt` instead of `Control`
-# PILOT_KEY_H=M-h
-# PILOT_KEY_J=M-j
-# PILOT_KEY_K=M-k
-# PILOT_KEY_L=M-l
-# PILOT_KEY_P=M-backslash
+# PILOT_KEY_H='M-h'
+# PILOT_KEY_J='M-j'
+# PILOT_KEY_K='M-k'
+# PILOT_KEY_L='M-l'
+# PILOT_KEY_P='M-\'
 
 PILOT_ROOT=$HOME/.vim/plugged/vim-tmux-pilot
 source-file $PILOT_ROOT/pilot.tmux
@@ -129,15 +129,13 @@ In `tmux`:
 | `PILOT_BOUNDARY` | `ignore` (`create`, `reflect`) | Boundary condition                 |
 | `PILOT_ROOT`     | Empty (must be set)            | Root directory of `vim-tmux-pilot` |
 | `PILOT_IGNORE`   | Empty                          | Applications to ignore             |
-| `PILOT_KEY_H`    | `C-h`                          | Keybinding to left                 |
-| `PILOT_KEY_J`    | `C-j`                          | Keybinding to down                 |
-| `PILOT_KEY_K`    | `C-k`                          | Keybinding to up                   |
-| `PILOT_KEY_L`    | `C-l`                          | Keybinding to right                |
-| `PILOT_KEY_P`    | `C-backslash`                  | Keybinding to previous split       |
+| `PILOT_KEY_H`    | `'C-h'`                        | Keybinding to left                 |
+| `PILOT_KEY_J`    | `'C-j'`                        | Keybinding to down                 |
+| `PILOT_KEY_K`    | `'C-k'`                        | Keybinding to up                   |
+| `PILOT_KEY_L`    | `'C-l'`                        | Keybinding to right                |
+| `PILOT_KEY_P`    | `'C-\'`                        | Keybinding to previous split       |
 
 The keybindings defined in `vim` and `tmux` must coincide for the plugin to work.
-In addition, because of a limitation of `tmux`,
-changing the keybinding `PILOT_KEY_P` to `M-\` requires to use the spelling `M-backslash`.
 
 # License
 

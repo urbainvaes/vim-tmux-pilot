@@ -21,27 +21,33 @@
 # THE SOFTWARE.
 
 %if #{==:#{PILOT_KEY_H},}
-KEY_H=C-h
+KEY_H='C-h'
 %else
 KEY_H=$PILOT_KEY_H
 %endif
 
 %if #{==:#{PILOT_KEY_J},}
-KEY_J=C-j
+KEY_J='C-j'
 %else
 KEY_J=$PILOT_KEY_J
 %endif
 
 %if #{==:#{PILOT_KEY_K},}
-KEY_K=C-k
+KEY_K='C-k'
 %else
 KEY_K=$PILOT_KEY_K
 %endif
 
 %if #{==:#{PILOT_KEY_L},}
-KEY_L=C-l
+KEY_L='C-l'
 %else
 KEY_L=$PILOT_KEY_L
+%endif
+
+%if #{==:#{PILOT_KEY_P},}
+KEY_P='C-\'
+%else
+KEY_P=$PILOT_KEY_P
 %endif
 
 # Fix for "grep: empty (sub)expression". See issue 10.
@@ -61,40 +67,21 @@ bind -n $KEY_K if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_K" \
          "run-shell 'sh $TMUX_WINTABCMD k'"
 bind -n $KEY_L if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_L" \
          "run-shell 'sh $TMUX_WINTABCMD l'"
+bind -n $KEY_P if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_P" "select-pane -l"
 
 bind-key -T copy-mode-vi $KEY_H run-shell 'sh $TMUX_WINTABCMD h'
 bind-key -T copy-mode-vi $KEY_J run-shell 'sh $TMUX_WINTABCMD j'
 bind-key -T copy-mode-vi $KEY_K run-shell 'sh $TMUX_WINTABCMD k'
 bind-key -T copy-mode-vi $KEY_L run-shell 'sh $TMUX_WINTABCMD l'
-
-# ---  MOVEMENT 'P' ---  #
-# This requires non-elegant hack because of '\'
-%if #{==:#{PILOT_KEY_P},}
-KEY_P=C-backslash
-%else
-KEY_P=$PILOT_KEY_P
-%endif
-
-%if #{==:#{KEY_P},C-backslash}
-bind -n C-\ if-shell "$IS_VIM_OR_FZF" "send-keys C-\\" "select-pane -l"
-bind-key -T copy-mode-vi C-\ select-pane -l
-%elif #{==:#{KEY_P},M-backslash}
-bind -n M-\ if-shell "$IS_VIM_OR_FZF" "send-keys M-\\" "select-pane -l"
-bind-key -T copy-mode-vi M-\ select-pane -l
-%else
-bind -n $KEY_P if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_P" "select-pane -l"
 bind-key -T copy-mode-vi $KEY_P select-pane -l
-%endif
-# ---------------------  #
-
 
 # Pause the plugin
 bind-key F11 run-shell 'sh $TMUX_WINTABCMD toggle-pause'
 
 # Re-add default functionality
-# bind $KEY_H send-keys C-h
-# bind $KEY_J send-keys C-j
-# bind $KEY_K send-keys C-k
-# bind $KEY_L send-keys C-l
+# bind $KEY_H send-keys $KEY_H
+# bind $KEY_J send-keys $KEY_J
+# bind $KEY_K send-keys $KEY_K
+# bind $KEY_L send-keys $KEY_L
 
 # vim: ft=tmux
