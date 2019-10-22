@@ -98,7 +98,6 @@ endfunction
 
 function! pilot#wintabcmd(...)
 
-  echom s:last_split_is_tmux
   let cmd = a:1
   let in_terminal = a:0 > 1 ? 1 : 0
   let s:tmux_cmd=""
