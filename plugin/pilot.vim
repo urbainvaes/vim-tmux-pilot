@@ -43,7 +43,6 @@ function! Pilot_on()
     exe "tnoremap <silent>" s:get_key('j') "\<c-\>\<c-n>:call pilot#terminal('j')\<cr>"
     exe "tnoremap <silent>" s:get_key('k') "\<c-\>\<c-n>:call pilot#terminal('k')\<cr>"
     exe "tnoremap <silent>" s:get_key('l') "\<c-\>\<c-n>:call pilot#terminal('l')\<cr>"
-    exe "tnoremap <silent>" s:get_key('p') "\<c-\>\<c-n>:call pilot#terminal('p')\<cr>"
   endif
 
   let s:on = 1
@@ -62,7 +61,6 @@ function! Pilot_off()
     exe "tunmap <silent>" s:get_key('j')
     exe "tunmap <silent>" s:get_key('k')
     exe "tunmap <silent>" s:get_key('l')
-    exe "tunmap <silent>" s:get_key('p')
   endif
 
   let s:on = 0
