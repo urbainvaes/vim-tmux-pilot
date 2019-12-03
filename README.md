@@ -2,8 +2,8 @@
 
 Inspired by [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator),
 this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` or `tmux` tabs when no `vim` or `tmux` split is available,
-similarly to what happens in the [i3](https://i3wm.org) window manager in a workspace with both tabs and splits.
-It can additionally be configured to automatically create a container when reaching the boundary of the navigation space.
+similarly to the behavior of the [i3](https://i3wm.org) window manager in a workspace with both tabs and splits.
+It can additionally be configured to automatically create a container when there isn't any in the specified direction.
 
 # Installation
 
@@ -57,8 +57,8 @@ as tilde expansion won't be performed on `PILOT_ROOT`.
 To avoid ambiguities,
 we use the simplified terminology {`vim`,`tmux`}-{splits,tabs} and
 the abbreviations {v,t}{splits,tabs}
-to refer to {`vim`-{windows,tabs},`tmux`-{panes,windows}}, respectively.
-The term "navigation space" is used to refer to the set of containers that can be accessed via the keys `c-{h,j,k,l}`;
+to refer to `vim`-{windows,tabs} and `tmux`-{panes,windows}, respectively.
+The term "navigation space" is used to refer to the set of existing containers that can be accessed via the keys `c-{h,j,k,l}`;
 see below for details.
 
 In the general case where `vim` is used inside a `tmux` session,
@@ -69,14 +69,15 @@ the order of precedence when `<ctrl-h>` or `<ctrl-l>` is issued from `vim` is as
 | `PILOT_MODE=winonly` | vsplit → tsplit            | vsplit → tsplit → vtab        |
 | `PILOT_MODE=wintab`  | vsplit → tsplit → ttab     | vsplit → tsplit → vtab → ttab |
 
-The variable `g:pilot_precedence` can be set to `'vtab'` to give `vim` tabs a precedence higher than that of `tmux` splits.
+The variable `g:pilot_precedence` can be set to `'vtab'` to give `vim` tabs a precedence higher than that of `tmux` splits when `g:pilot_mode == 'wintab'`.
 This ensures a slightly more consistent behaviour,
 in the sense that `<c-l><c-h>` will always bring us back to where we started from.
 
 When trying to move across a boundary of the navigation space,
 i.e. when there isn't any container to move to in the specified direction,
 the plugin will perform one of the following actions,
-based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
+based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`,
+which need not coincide:
 
 - If the behaviour at the boundary is set to **create**,
   a container corresponding to the type of lowest precedence will be created.
@@ -87,7 +88,7 @@ based on the configuration variables `g:pilot_boundary` and `PILOT_BOUNDARY`:
   the focus will move to the opposite container of lowest precedence.
   If there isn't one,
   containers of higher precedence will be used,
-  or the key will be sent to the program if none is available.
+  or the key will be sent to the running program if no container is available.
 
 - If the behaviour at the boundary is set to **ignore**,
   the key is simply ignored (in `vim`)
@@ -102,7 +103,7 @@ For example, in a shell:
 > # Set PILOT_BOUNDARY to 'create' for this session
 > tmux setenv PILOT_BOUNDARY create
 >
-> # Set PILOT_BOUNDARY to 'reflect' for other sessions
+> # Set PILOT_BOUNDARY to 'reflect' for this and other sessions
 > tmux setenv -g PILOT_BOUNDARY reflect
 ```
 
@@ -115,10 +116,10 @@ In `vim`:
 | `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
 | `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
 | `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
-| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left                   |
-| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down                   |
-| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up                     |
-| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right                  |
+| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left motion            |
+| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down motion            |
+| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up motion              |
+| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right motion           |
 | `g:pilot_key_p`      | `'<c-\>'`                            | Keybinding to to previous split      |
 
 In `tmux`:
