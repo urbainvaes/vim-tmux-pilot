@@ -45,7 +45,7 @@ KEY_L=$PILOT_KEY_L
 %endif
 
 %if #{==:#{PILOT_KEY_P},}
-KEY_P='C-\'
+KEY_P='M-\'
 %else
 KEY_P=$PILOT_KEY_P
 %endif
