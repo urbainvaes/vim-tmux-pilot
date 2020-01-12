@@ -45,7 +45,7 @@ KEY_L=$PILOT_KEY_L
 %endif
 
 %if #{==:#{PILOT_KEY_P},}
-KEY_P='M-\'
+KEY_P='C-\'
 %else
 KEY_P=$PILOT_KEY_P
 %endif
@@ -67,7 +67,18 @@ bind -n $KEY_K if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_K" \
          "run-shell 'sh $TMUX_WINTABCMD k'"
 bind -n $KEY_L if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_L" \
          "run-shell 'sh $TMUX_WINTABCMD l'"
-bind -n $KEY_P if-shell "$IS_VIM_OR_FZF" "send-keys $KEY_P" "select-pane -l"
+
+ESCAPE_KEY_P=$KEY_P
+
+%if #{==:#{KEY_P},C-\}
+ESCAPE_KEY_P='C-\\'
+%endif
+
+%if #{==:#{KEY_P},M-\}
+ESCAPE_KEY_P='M-\\'
+%endif
+
+bind -n $KEY_P if-shell "$IS_VIM_OR_FZF" "send-keys $ESCAPE_KEY_P" "select-pane -l"
 
 bind-key -T copy-mode-vi $KEY_H run-shell 'sh $TMUX_WINTABCMD h'
 bind-key -T copy-mode-vi $KEY_J run-shell 'sh $TMUX_WINTABCMD j'

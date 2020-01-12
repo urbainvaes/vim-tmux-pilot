@@ -25,7 +25,7 @@ let s:default_keys = {
       \ "j": '<c-j>',
       \ "k": '<c-k>',
       \ "l": '<c-l>',
-      \ "p": '<a-\>'}
+      \ "p": '<c-\>'}
 
 function! s:get_key(key)
   return get(g:, "pilot_key_".a:key, s:default_keys[a:key])
