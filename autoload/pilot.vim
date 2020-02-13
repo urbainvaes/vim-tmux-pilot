@@ -49,18 +49,34 @@ function! s:get_tmux_cmd(cmd)
 endfunction
 
 function! s:vim_boundary(cmd, mode, boundary)
-  if a:boundary == 'create'
+  if a:boundary == 'create' || a:boundary == 'split'
     if a:cmd == 'j'
-      return "rightbelow new"
+      if a:boundary == 'create'
+        return "rightbelow new"
+      else
+        return "rightbelow split"
+      endif
     elseif a:cmd == 'k'
-      return "leftabove new"
+      if a:boundary == 'create'
+        return "leftabove new"
+      else
+        return "leftabove split"
+      endif
     endif
 
     if a:mode == 'winonly'
       if a:cmd == 'h'
-        return "leftabove vnew"
+        if a:boundary == 'create'
+          return "leftabove vnew"
+        else
+          return "leftabove vsplit"
+        endif
       elseif a:cmd == 'l'
-        return "rightbelow vnew"
+        if a:boundary == 'create'
+          return "rightbelow vnew"
+        else
+          return "rightbelow vsplit"
+        endif
       endif
 
     elseif a:mode == 'wintab'
