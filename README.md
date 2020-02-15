@@ -83,6 +83,8 @@ which need not coincide:
   a container corresponding to the type of lowest precedence will be created.
   This way, the behaviour is consistent between containers
   (i.e. containers that are at the boundary of the navigation space do not receive more features for it).
+  In vim, the command employed to create a new horizontal (resp. vertical) window is either `split` (resp. `vsplit`) or `new` (resp. `vnew`),
+  depending on the value of `g:pilot_split_or_new`.
 
 - If the behaviour at the boundary is set to **reflect**,
   the focus will move to the opposite container of lowest precedence.
@@ -111,16 +113,17 @@ For example, in a shell:
 
 In `vim`:
 
-| Config               | Default (other values)               | Description                          |
-| ------               | -------                              | -----------                          |
-| `g:pilot_mode`       | `'winonly'` (`'wintab`')             | Mode of operation                    |
-| `g:pilot_boundary`   | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
-| `g:pilot_precedence` | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
-| `g:pilot_key_h`      | `'<c-h>'`                            | Keybinding to left motion            |
-| `g:pilot_key_j`      | `'<c-j>'`                            | Keybinding to down motion            |
-| `g:pilot_key_k`      | `'<c-k>'`                            | Keybinding to up motion              |
-| `g:pilot_key_l`      | `'<c-l>'`                            | Keybinding to right motion           |
-| `g:pilot_key_p`      | `'<c-\>'`                            | Keybinding to to previous split      |
+| Config                 | Default (other values)               | Description                          |
+| ------                 | -------                              | -----------                          |
+| `g:pilot_mode`         | `'winonly'` (`'wintab`')             | Mode of operation                    |
+| `g:pilot_boundary`     | `'ignore'` (`'create'`, `'reflect'`) | Boundary condition                   |
+| `g:pilot_precedence`   | `'tsplit'` (`'vtab'`)                | Precedence between vtabs and tsplits |
+| `g:pilot_split_or_new` | `new` (`split`)                      | Use `split` or `new` for new windows |
+| `g:pilot_key_h`        | `'<c-h>'`                            | Keybinding to left motion            |
+| `g:pilot_key_j`        | `'<c-j>'`                            | Keybinding to down motion            |
+| `g:pilot_key_k`        | `'<c-k>'`                            | Keybinding to up motion              |
+| `g:pilot_key_l`        | `'<c-l>'`                            | Keybinding to right motion           |
+| `g:pilot_key_p`        | `'<c-\>'`                            | Keybinding to to previous split      |
 
 In `tmux`:
 

@@ -23,6 +23,7 @@
 let s:default_precedence = 'tsplit'
 let s:default_mode = 'winonly'
 let s:default_boundary = 'ignore'
+let s:default_split_or_new = 'new'
 let s:path = expand('<sfile>:p:h')
 let s:last_split_is_tmux = 0
 
@@ -49,34 +50,19 @@ function! s:get_tmux_cmd(cmd)
 endfunction
 
 function! s:vim_boundary(cmd, mode, boundary)
-  if a:boundary == 'create' || a:boundary == 'split'
+  if a:boundary == 'create'
+    let split_or_new = get(g:, "pilot_split_or_new", s:default_split_or_new)
     if a:cmd == 'j'
-      if a:boundary == 'create'
-        return "rightbelow new"
-      else
-        return "rightbelow split"
-      endif
+        return "rightbelow ".split_or_new
     elseif a:cmd == 'k'
-      if a:boundary == 'create'
-        return "leftabove new"
-      else
-        return "leftabove split"
-      endif
+        return "leftabove ".split_or_new
     endif
 
     if a:mode == 'winonly'
       if a:cmd == 'h'
-        if a:boundary == 'create'
-          return "leftabove vnew"
-        else
-          return "leftabove vsplit"
-        endif
+          return "leftabove v".split_or_new
       elseif a:cmd == 'l'
-        if a:boundary == 'create'
-          return "rightbelow vnew"
-        else
-          return "rightbelow vsplit"
-        endif
+          return "rightbelow v".split_or_new
       endif
 
     elseif a:mode == 'wintab'
