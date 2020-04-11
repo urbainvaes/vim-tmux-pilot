@@ -20,6 +20,11 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 " THE SOFTWARE.
 
+if exists('g:loaded_pilot') || &compatible
+    finish
+endif
+let g:loaded_pilot = 1
+
 let s:default_keys = {
       \ "h": '<c-h>',
       \ "j": '<c-j>',
