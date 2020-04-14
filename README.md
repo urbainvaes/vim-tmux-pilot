@@ -5,7 +5,7 @@ this plugin further extends the `<c-{h,l}>` mappings to switch between `vim` or 
 similarly to the behavior of the [i3](https://i3wm.org) window manager in a workspace with both tabs and splits.
 It can additionally be configured to automatically create a container when there isn't any in the specified direction.
 
-# Installation
+## Installation
 
 I recommend using [vim-plug](https://github.com/junegunn/vim-plug)
 and sourcing the appropriate file from `~/.tmux.conf`.
@@ -52,7 +52,7 @@ Note that the `$PILOT_ROOT` environment variable needs to be defined for the plu
 and that it is important to use `$HOME` and not the tilde (`~`),
 as tilde expansion won't be performed on `PILOT_ROOT`.
 
-# Usage
+## Usage
 
 To avoid ambiguities,
 we use the simplified terminology {`vim`,`tmux`}-{splits,tabs} and
@@ -109,7 +109,7 @@ For example, in a shell:
 > tmux setenv -g PILOT_BOUNDARY reflect
 ```
 
-# Customization
+## Customization
 
 In `vim`:
 
@@ -141,6 +141,6 @@ In `tmux`:
 
 The keybindings defined in `vim` and `tmux` must coincide for the plugin to work.
 
-# License
+## License
 
 MIT
