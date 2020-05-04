@@ -204,6 +204,13 @@ function! s:insert()
   augroup END
 endfunction
 
+function! pilot#autoinsert()
+  augroup pilot
+    autocmd!
+    autocmd BufEnter <buffer> call s:insert()
+  augroup END
+endfunction
+
 function! pilot#terminal(cmd)
   if bufname('') =~ '/bin/fzf'
     " Hack from [1]
@@ -212,10 +219,7 @@ function! pilot#terminal(cmd)
     call feedkeys("i" . litteral_cmd, 'n')
     return
   endif
-  augroup pilot
-    autocmd!
-    autocmd BufEnter <buffer> call s:insert()
-  augroup END
+  call pilot#autoinsert()
   call pilot#wintabcmd(a:cmd, "terminal")
 endfunction
 
