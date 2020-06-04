@@ -219,7 +219,9 @@ function! pilot#terminal(cmd)
     call feedkeys("i" . litteral_cmd, 'n')
     return
   endif
-  call pilot#autoinsert()
+  if has("nvim")
+    call pilot#autoinsert()
+  endif
   call pilot#wintabcmd(a:cmd, "terminal")
 endfunction
 

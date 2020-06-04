@@ -48,6 +48,12 @@ function! Pilot_on()
     exe "tnoremap <silent>" s:get_key('j') "\<c-\>\<c-n>:call pilot#terminal('j')\<cr>"
     exe "tnoremap <silent>" s:get_key('k') "\<c-\>\<c-n>:call pilot#terminal('k')\<cr>"
     exe "tnoremap <silent>" s:get_key('l') "\<c-\>\<c-n>:call pilot#terminal('l')\<cr>"
+  elseif exists("+termwinkey")
+    let twk = &twk == "" ? "<c-w>" : &twk
+    exe "tnoremap <silent>" s:get_key('h') twk.":call pilot#terminal('h')\<cr>"
+    exe "tnoremap <silent>" s:get_key('j') twk.":call pilot#terminal('j')\<cr>"
+    exe "tnoremap <silent>" s:get_key('k') twk.":call pilot#terminal('k')\<cr>"
+    exe "tnoremap <silent>" s:get_key('l') twk.":call pilot#terminal('l')\<cr>"
   endif
 
   let s:on = 1
@@ -61,7 +67,7 @@ function! Pilot_off()
   exe "nunmap" s:get_key('l')
   exe "nunmap" s:get_key('p')
 
-  if has("nvim")
+  if has("nvim") || exists("+termwinkey")
     exe "tunmap <silent>" s:get_key('h')
     exe "tunmap <silent>" s:get_key('j')
     exe "tunmap <silent>" s:get_key('k')
